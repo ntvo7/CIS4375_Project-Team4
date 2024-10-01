@@ -94,6 +94,17 @@ app.post('/update_beverage', function(req, res){
   
   });
 
+app.post('/update_beverage/:bevname', function(req, res){
+    var bevname = req.params.bevname;
+    var newoh = req.body.newoh;
+  
+    axios.put('http://127.0.0.1:5000/api/beverages', {bev_name:bevname, bev_onhand:newoh})
+   console.log("bevname updated is: " + bevname);
+   console.log("Current OnHand: " + newoh);
+
+    res.redirect('/beverage')
+    });
+
 app.post('/delete_beverage', function(req, res){
     // create a variable to hold the floor num from the request body
     var bevname = req.body.bevname
