@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head'); %>
+</head>
+<body class="container">
+
+<header>
+    <%- include('../partials/header'); %>
+</header>
+
+<main>
+<center><table style="table-layout: fixed; width: 100%;">
+    <tr> 
+        <th>
+        <div class="jumbotron">
+                <form action="/add_beverage" method="post">
+                    <h2>Add Beverage</h2>
+                    <div class="form-group">
+                        <label class="form-label"> Insert Beverage Name:</label>
+                        <input type="text" id="bevname" name="bevname" class="form-control" placeholder="Beverage Name" required
+                        autofocus>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label"> Insert Beverage Price:</label>
+                        <input type="text" id="bevprice" name="bevprice" class="form-control" placeholder="Price" required
+                        autofocus>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label"> Insert OnHand:</label>
+                        <input type="text" id="bevoh" name="bevoh" class="form-control" placeholder="OnHand" required
+                        autofocus>
+                    </div>
+                    <input class="btn btn-lg btn-primary btn-block" type="submit" value="Add">
+                </form>
+        </div>
+    </th>
+        <th>
+        <div class="jumbotron">
+            <form action="/update_beverage" method="post">
+                <h2>Update Beverage</h2>
+                <div class="form-group">
+                    <label class="form-label"> Insert Beverage Name:</label>
+                    <input type="text" id="bevname" name="bevname" class="form-control" placeholder="Beverage Name" required
+                    autofocus>
+                </div>
+                <div class="form-group">
+                    <label class="form-label"> Insert New OnHand:</label>
+                    <input type="text" id="newoh" name="newoh" class="form-control" placeholder="Current OnHand" required
+                    autofocus>
+                </div>
+
+                <input class="btn btn-lg btn-primary btn-block" type="submit" value="Update">
+            </form>
+        </div>
+    </th>
+    <th>
+    <div class="jumbotron">
+        <form action="/delete_beverage" method="post">
+            <h2>Delete Beverage</h2>
+            <div class="form-group">
+                <label class="form-label"> Insert Beverage Name:</label>
+                <input type="text" id="bevname" name="bevname" class="form-control" placeholder="Beverage Name" required
+                autofocus>
+            </div>
+            <input class="btn btn-lg btn-primary btn-block" type="submit" value="Delete">
+        </form>
+    </div>
+    </th>
+    </tr>
+        <th colspan="3">
+        <div class="jumbotron">
+            <center><ul><h2><%= locals.tagline %></h2></ul>
+                    <table border="1" style="width:100%">
+                        <tr>
+                          <th>Name</th>
+                          <th>Price</th>
+                          <th style="text-align: right">Onhand</th>
+                        </tr>
+                <% if (locals.beverage) { %>
+                    <% locals.beverage.forEach(function(beverages) { %>
+                        <tr style="font-weight:normal">
+                          <td><%= beverages.bev_name %></td>
+                          <td>$<%= beverages.bev_price %></td>
+                          <td align="right"><%= beverages.bev_onhand %></td>
+                          <td align="right"><button onclick="location.href='/delete/<%= beverages.bev_name %>'" >Delete</button></td>
+                        </tr>
+                    <% }); %>
+                <% } %>
+                      </table>
+            </center>
+        </div>
+    </th>
+    </tr>
+</table></center>
+
+</main>
+
+<footer>
+    <%- include('../partials/footer'); %>
+</footer>
+
+</body>
+</html>

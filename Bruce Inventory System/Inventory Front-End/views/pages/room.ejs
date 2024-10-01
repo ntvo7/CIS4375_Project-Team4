@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head'); %>
+</head>
+<body class="container">
+
+<header>
+    <%- include('../partials/header'); %>
+</header>
+
+<main>
+        <center><table style="table-layout: fixed; width: 100%;">
+            <tr>
+                <th colspan="3">
+                <div class="jumbotron">
+                     <center><ul><h2><%= locals.tagline %></h2></ul>
+                    <ul style="list-style: none;">
+                        <% if (locals.room) { %>
+
+                            <% locals.room.forEach(function(rooms) { %>
+                                <li>
+                                    Room Number: <%= rooms.number %><br>
+                                    Room Capacity: <%= rooms.capacity %><br>
+                                    Room Floor: <%= rooms.floor %>
+                                </li><br>
+                            <% }); %>
+                           
+                        <% } %>
+                        
+                    </ul></center>
+                </div>
+            </th>
+            </tr>
+            <tr> 
+                <th>
+                <div class="jumbotron">
+                        <form action="/add_room" method="post">
+                            <h2>Add Room</h2>
+                            <div class="form-group">
+                                <label class="form-label"> Insert Room Number:</label>
+                                <input type="text" id="roomnum" name="roomnum" class="form-control" placeholder="Room Number" required
+                                autofocus>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label"> Insert Room Capacity:</label>
+                                <input type="text" id="roomcapacity" name="roomcapacity" class="form-control" placeholder="Room Capacity" required
+                                autofocus>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label"> Insert Room Floor:</label>
+                                <input type="text" id="roomfloor" name="roomfloor" class="form-control" placeholder="Room Floor" required
+                                autofocus>
+                            </div>
+                            <input class="btn btn-lg btn-primary btn-block" type="submit" value="Add">
+                        </form>
+                </div>
+            </th>
+                <th>
+                <div class="jumbotron">
+                    <form action="/update_room" method="post">
+                        <h2>Update Room</h2>
+                        <div class="form-group">
+                            <label class="form-label"> Insert Room Number:</label>
+                            <input type="text" id="roomnum" name="roomnum" class="form-control" placeholder="Room Number" required
+                            autofocus>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label"> Insert New Room Capacity:</label>
+                            <input type="text" id="nroomcapacity" name="nroomcapacity" class="form-control" placeholder="New Room Capacity" required
+                            autofocus>
+                        </div>
+
+                        <input class="btn btn-lg btn-primary btn-block" type="submit" value="Update">
+                    </form>
+                </div>
+            </th>
+            <th>
+            <div class="jumbotron">
+                <form action="/delete_room" method="post">
+                    <h2>Delete Room</h2>
+                    <div class="form-group">
+                        <label class="form-label"> Insert Room Number:</label>
+                        <input type="text" id="roomnum" name="roomnum" class="form-control" placeholder="Room Number" required
+                        autofocus>
+                    </div>
+                    <input class="btn btn-lg btn-primary btn-block" type="submit" value="Delete">
+                </form>
+            </div>
+            </th>
+            </tr>
+        </table></center>
+</main>
+
+<footer>
+    <%- include('../partials/footer'); %>
+</footer>
+
+</body>
+</html>

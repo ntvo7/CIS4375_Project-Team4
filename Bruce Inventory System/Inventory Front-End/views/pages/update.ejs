@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head'); %>
+
+    <style>
+        p.round3 {
+          border: 2px solid red;
+          border-radius: 12px;
+          padding: 5px;
+        }
+        p.round2 {
+          border: 2px solid blue;
+          border-radius: 8px;
+          padding: 5px;
+        }
+        </style>
+
+</head>
+<body class="container">
+
+    <header>
+        <%- include('../partials/header'); %>
+    </header>
+
+    <main>
+        <!-- print thank you message-->
+        <p> Thank you for submitting the form.</p>
+
+        <!-- PRINT ONLY IF update_floor FORM IS DIRECTED HERE -->
+        <br><br>
+        <% if (locals.userinfo) { %>
+            <% if (userinfo.floornum) { %>
+                <p>Floor Number being Updated: </p>
+                <p class="round2">
+                    <%= userinfo.floornum %>
+                </p>
+            <% } 
+            if (userinfo.nfloorname) { %>
+                <p>Floor Name Updated to: </p>
+                <p class="round2">
+                    <label><%= userinfo.nfloorname %> </label>
+                </p>
+            <% } %>
+        <% } %>
+
+                <!-- PRINT ONLY IF add_room FORM IS DIRECTED HERE -->
+            <% if (locals.userinfo) { %>
+                <% if (userinfo.roomnum) { %>
+                    <p>Room Number being Updated: </p>
+                    <p class="round2">
+                        <%= userinfo.roomnum %>
+                    </p>
+                <% }
+                if (userinfo.nroomcapacity) { %>
+                    <p>Room Capacity Updated to: </p>
+                    <p class="round2">
+                        <label><%= userinfo.nroomcapacity %> </label>
+                    </p>
+                <% } %>
+            <% } %>
+
+                <!-- PRINT ONLY IF add_resident FORM IS DIRECTED HERE -->
+                <% if (locals.userinfo) { %>
+                    <% if (userinfo.nresidentfname) { %>
+                        <p>Resident First Name Updated: </p>
+                        <p class="round2">
+                            <%= userinfo.nresidentfname %>
+                        </p>
+                    <% }
+                    if (userinfo.nresidentlname) { %>
+                        <p>Resident Last Name Updated: </p>
+                        <p class="round2">
+                            <label><%= userinfo.nresidentlname %> </label>
+                        </p>
+                    <% }
+                    if (userinfo.nresidentage) { %>
+                        <p>Resident Age Updated: </p>
+                        <p class="round2">
+                            <label><%= userinfo.nresidentage %> </label>
+                        </p>
+                    <% } %>
+                <% } %>
+
+    </main>
+
+    <footer>
+        <%- include('../partials/footer'); %>
+    </footer>
+
+</body>
+</html>

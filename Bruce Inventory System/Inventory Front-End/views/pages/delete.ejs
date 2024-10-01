@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head'); %>
+
+    <style>
+        p.round3 {
+          border: 2px solid red;
+          border-radius: 12px;
+          padding: 5px;
+        }
+        p.round2 {
+          border: 2px solid blue;
+          border-radius: 8px;
+          padding: 5px;
+        }
+        </style>
+
+</head>
+<body class="container">
+
+    <header>
+        <%- include('../partials/header'); %>
+    </header>
+
+    <main>
+        <!-- print thank you message-->
+        <p> Thank you for submitting the form.</p>
+        
+        <!-- PRINT ONLY IF delete_floor FORM IS DIRECTED HERE -->
+        <br><br>
+        <% if (locals.userinfo) { %>
+            <% if (userinfo.floornum) { %>
+                <p>Floor Number Deleted: </p>
+                <p class="round3">
+                    <%= userinfo.floornum %>
+                </p>
+            <% } %>
+        <% } %>
+
+                <!-- PRINT ONLY IF delete_room FORM IS DIRECTED HERE -->
+            <% if (locals.userinfo) { %>
+                <% if (userinfo.roomnum) { %>
+                    <p>Room Number Deleted: </p>
+                    <p class="round3">
+                        <%= userinfo.roomnum %>
+                    </p>
+                <% } %>
+            <% } %>
+
+                <!-- PRINT ONLY IF delete_resident FORM IS DIRECTED HERE -->
+                <% if (locals.userinfo) { %>
+                    <% if (userinfo.roomnum2) { %>
+                        <p>Resident in Room <%= userinfo.roomnum2 %> Deleted </p>
+                    <% } %>
+                <% } %>
+
+    </main>
+
+    <footer>
+        <%- include('../partials/footer'); %>
+    </footer>
+
+</body>
+</html>

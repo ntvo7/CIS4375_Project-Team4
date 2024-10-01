@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head'); %>
+
+</head>
+<body class="container">
+
+    <header>
+        <%- include('../partials/header'); %>
+    </header>
+
+    <main>
+        <% if (locals.auth) { %>
+           WELCOME
+        <br><br>
+        <p> You now have access to the inventory operations of Bruce's Convenience Store</p>
+        <p> System can be accessed through the tabs above</p>
+        <% } %>
+    </main>
+
+    <footer>
+        <%- include('../partials/footer'); %>
+    </footer>
+
+</body>
+</html>
