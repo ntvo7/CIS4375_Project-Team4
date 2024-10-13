@@ -1,17 +1,40 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="/main">Bruce's Convenience Store</a>
-  <ul class="navbar-nav mr-auto">
-    <li class="nav-item">
-      <a class="nav-link" href="/beverage">Beverages</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="/room">Snacks</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="/resident">Tobacco</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="/logout">Log out</a>
-    </li>
-  </ul>
-</nav>
+
+<style>
+  main { padding-top:50px; }
+  
+  .sidebar {
+    margin: 0;
+    padding: 0;
+    width: 200px;
+    background-color: #f1f1f1;
+    position: fixed;
+    height: 100%;
+    overflow: auto;
+  }
+  
+  /* Sidebar links */
+  .sidebar a {
+    display: block;
+    color: black;
+    padding: 16px;
+    text-decoration: none;
+  }
+  
+  /* Active/current link */
+  .sidebar a.active {
+    background-color: #04AA6D;
+    color: white;
+  }
+  
+  /* Links on mouse-over */
+  .sidebar a:hover:not(.active) {
+    background-color: #555;
+    color: white;
+  }
+  
+  /* Page content. The value of the margin-left property should match the value of the sidebar's width property */
+  div.content {
+    margin-left: 200px;
+    padding: 1px 16px;
+  }
+  </style>

@@ -1,78 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <%- include('../partials/head'); %>
 </head>
-<body class="container">
 
-<header>
-    <%- include('../partials/header'); %>
-</header>
+<body>
+        <%- include('../partials/header'); %>
+        <div class="sidebar">
+            <a  href="/main">Home</a>
+            <a href="/beverage">Dashboard</a>
+            <a class="active" href="/beverage_management">Inventory Management</a>
+            <a href="/logout">Log off</a>    
+    </div>
 
+<div class="content">
 <main>
-<center><table style="table-layout: fixed; width: 100%;">
-    <tr> 
-        <th colspan="3">
-        <div class="jumbotron">
-                <form action="/add_beverage" method="post">
-                    <h2>Add Beverage</h2>
-                    <div class="form-group">
-                        <label class="form-label"> Insert Beverage Name:</label>
-                        <input type="text" id="bevname" name="bevname" class="form-control" placeholder="Beverage Name" required
-                        autofocus>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label"> Insert Beverage Price:</label>
-                        <input type="text" id="bevprice" name="bevprice" class="form-control" placeholder="Price" required
-                        autofocus>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label"> Insert OnHand:</label>
-                        <input type="text" id="bevoh" name="bevoh" class="form-control" placeholder="OnHand" required
-                        autofocus>
-                    </div>
-                    <input class="btn btn-lg btn-primary btn-block" type="submit" value="Add">
-                </form>
+        <div>
+            <form action="/add_beverage" method="post">
+                <h2>Add Product</h2>
+                <div class="form-group">
+                    <label class="form-label"> Insert Product Name:</label>
+                    <input type="text" id="bevname" name="bevname" class="form-control" placeholder="Product Name" required
+                    autofocus>
+                </div>
+                <div class="form-group">
+                    <label class="form-label"> Insert Product Price:</label>
+                    <input type="text" id="bevprice" name="bevprice" class="form-control" placeholder="Price" required
+                    autofocus>
+                </div>
+                <div class="form-group">
+                    <label class="form-label"> Insert Product:</label>
+                    <input type="text" id="bevoh" name="bevoh" class="form-control" placeholder="OnHand" required
+                    autofocus>
+                </div>
+                <input class="btn btn-lg btn-primary btn-block" type="submit" value="Add">
+            </form>
         </div>
-        </th>
-    </tr>
-        <th colspan="3">
-        <div class="jumbotron">
-            <center><ul><h2><%= locals.tagline %></h2></ul>
-                    <table border="1" style="width:100%">
-                        <tr>
-                          <th>Name</th>
-                          <th>Price</th>
-                          <th style="text-align: right">Onhand</th>
-                        </tr>
-                <% if (locals.beverage) { %>
-                    <% locals.beverage.forEach(function(beverages) { %>
-                        <tr style="font-weight:normal">
-                          <td><%= beverages.bev_name %></td>
-                          <td>$<%= beverages.bev_price %></td>
-                          <td align="right"><%= beverages.bev_onhand %></td>
-                          <td align="right">
-                            <form action="/update_beverage/<%= beverages.bev_name %>" method="post">
-                                <input type="text" id="newoh" name="newoh" placeholder="OnHand" required autofocus>
-                                <input style="font-weight:bold; background-color: lightskyblue;" type="submit" value="Update">
-                            </form>
-                          </td>
-                          <td align="right"><button style="font-weight:bold; background-color: red;" onclick="location.href='/delete/<%= beverages.bev_name %>'" >Delete</button></td>
-                        </tr>
-                    <% }); %>
-                <% } %>
-                      </table>
-            </center>
-        </div>
-        </th>
-    </tr>
-</table></center>
-
 </main>
 
 <footer>
     <%- include('../partials/footer'); %>
 </footer>
 
+</div>
 </body>
 </html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../partials/dash'); %>
+</head>
+
+<body>
+        <%- include('../partials/header'); %>
+        <div class="sidebar">
+            <a  href="/main">Home</a>
+            <a class="active" href="/beverage">Dashboard</a>
+            <a href="/beverage_management">Inventory Management</a>
+            <a href="/logout">Log off</a>
+            
+        </div>
+
+
+<div class="content">
+    <main>
+        <th>
+        <div>
+            <center><ul><h2><%= locals.tagline %></h2></ul>
+                    <table class="table table-hover scrolldown">
+                        <thead>
+                        <tr>
+                          <th>Name</th>
+                          <th>Price</th>
+                          <th style="text-align: right">Onhand</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                <% if (locals.beverage) { %>
+                    <% locals.beverage.forEach(function(beverages) { %>
+                        <tr style="font-weight:normal">
+                          <td><%= beverages.bev_name %></td>
+                          <td>$<%= beverages.bev_price %></td>
+                          <td align="right"><%= beverages.bev_onhand %></td>
+                          <td align="right">
+                            <form action="/update_beverage/<%= beverages.bev_name %>" method="post">
+                                <input size="4" type="text" id="newoh" name="newoh" placeholder="OnHand" required autofocus>
+                                <input style="font-weight:bold; background-color: lightskyblue;" type="submit" value="Update">
+                            </form>
+                          </td>
+                          <td align="right"><button class="button button3" style="font-weight:bold;" onclick="location.href='/delete/<%= beverages.bev_name %>'">X</button></td>
+                        </tr>
+                    <% }); %>
+                <% } %>
+                        </tbody>
+                      </table>
+            </center>
+        </div>
+        </th>
+    </tr>
+</main>
+
+<footer>
+    <%- include('../partials/footer'); %>
+</footer>
+
+</div>
+</body>
+</html>

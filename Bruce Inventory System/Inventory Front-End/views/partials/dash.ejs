@@ -1,0 +1,74 @@
+<meta charset="UTF-8">
+<title>Bruce's Convenience Store </title>
+
+<!-- CSS (load bootstrap from a CDN) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<style>
+    table.scrolldown {
+        width: 100%;
+    }
+
+    /* To display the block as level element */
+    table.scrolldown tbody,
+    table.scrolldown thead {
+        display: block;
+    }
+
+    thead tr th {
+        height: 10px;
+        line-height: 10px;
+    }
+
+    table.scrolldown tbody {
+
+        /* Set the height of table body */
+        height: 300px;
+
+        /* Set vertical scroll */
+        overflow-y: auto;
+
+        /* Hide the horizontal scroll */
+        overflow-x: hidden;
+    }
+
+    tbody td{
+        width: 200px;
+    }
+    thead th {
+        width: 200px;
+    }
+
+::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 10px;
+	background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar
+{
+	width: 12px;
+	background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: #555;
+}
+
+.button3 {
+  background-color: transparent; 
+  color: transparent; 
+  border: 0;
+}
+.button3:hover {
+  background-color: transparent;
+  color: red;
+}
+
+</style>
