@@ -86,16 +86,6 @@ def delete_beverages_byname():
         
     return "Delete request successful"
 
-@app.route('/api/beverages', methods=['DELETE'])
-def delete_beverage_byname():
-    request_data = request.get_json()
-    bevtodelete = request_data['bev_name']
-    
-    sql = "delete from beverages where bev_name = '%s'" % (bevtodelete)
-    execute_myquery(con, sql)
-        
-    return "Delete request successful"
-
 #API GET to retrieve all beverages
 @app.route('/api/beverages', methods=['GET'])
 def all_beverages():
@@ -121,107 +111,5 @@ def api_put_beverage_byname():
         
     return "Put active request successful!"
 
-
-#API POST fuction to add rooms into database (based on classwork)
-@app.route('/api/room', methods=['POST'])
-def add_room():
-    request_data = request.get_json()
-    newroomcap = request_data['capacity']
-    newroomnum = request_data['number']
-    newroomfloor = request_data['floor']
-    
-    sql = "insert into room (capacity, number, floor) values ('%s', '%s', '%s')" % (newroomcap, newroomnum, newroomfloor)
-    execute_myquery(con, sql)
-        
-    return "Add request successful"
-
-#API DELETE function to delete room by number (based on classwork)
-@app.route('/api/room', methods=['DELETE'])
-def delete_room_bynumber():
-    request_data = request.get_json()
-    roomnumtodelete = request_data['number']
-    
-    sql = "delete from room where number = %s" % (roomnumtodelete)
-    execute_myquery(con, sql)
-        
-    return "Delete request successful"
-
-#API GET to retrieve all rooms (based on classwork)
-@app.route('/api/room', methods=['GET'])
-def single_room():
-    #creating dictionary list of all current rooms
-    sql = "select * from room"
-    all = execute_read_myquery(con, sql)
-    rooms = []
-    for eachrow in all:
-        if eachrow not in rooms:
-            rooms.append(eachrow)
-
-    return jsonify(rooms)
-
-#PUT funtion that updates room capacity (based on classwork)
-@app.route('/api/room', methods=['PUT'])
-def api_put_room_bynumber():
-    request_data = request.get_json()
-    roomnumber = request_data['number']
-    updateroomcap = request_data['capacity']
-    
-    sql = "update room set capacity ='%s' where number = %s" %(updateroomcap, roomnumber)
-    execute_myquery(con, sql)
-        
-    return "Put active request successful!"
-
-
-#API POST fuction to add resident into database (based on classwork)
-@app.route('/api/resident', methods=['POST'])
-def add_resident():
-    request_data = request.get_json()
-    newfirst = request_data['firstname']
-    newlast = request_data['lastname']
-    newage = request_data['age']
-    newroom = request_data['room']
-    
-    sql = "insert into resident (firstname, lastname, age, room) values ('%s', '%s', '%s', '%s')" % (newfirst, newlast, newage, newroom)
-    execute_myquery(con, sql)
-        
-    return "Add request successful"
-
-#API DELETE function to delete resident by id (based on classwork)
-@app.route('/api/resident', methods=['DELETE'])
-def delete_resident_byroom():
-    request_data = request.get_json()
-    residenttodelete = request_data['room']
-    
-    sql = "delete from resident where room = %s" % (residenttodelete)
-    execute_myquery(con, sql)
-        
-    return "Delete request successful"
-
-#API GET to retrieve all residents (based on classwork)
-@app.route('/api/resident', methods=['GET'])
-def single_resident():
-    #creating dictionary list of all current residents
-    sql = "select * from resident"
-    all = execute_read_myquery(con, sql)
-    residents = []
-    for eachrow in all:
-        if eachrow not in residents:
-            residents.append(eachrow)
-
-    return jsonify(residents)
-
-#PUT funtion that updates resident info  (based on classwork)
-@app.route('/api/resident', methods=['PUT'])
-def api_put_resident_byid():
-    request_data = request.get_json()
-    updatefirst = request_data['firstname']
-    updatelast = request_data['lastname']
-    updateage = request_data['age']
-    updateroom = request_data['room']
-    
-    sql = "update resident set firstname ='%s', lastname ='%s', age ='%s' where room ='%s'" %(updatefirst, updatelast, updateage, updateroom)
-    execute_myquery(con, sql)
-        
-    return "Put active request successful!"
 
 app.run()
