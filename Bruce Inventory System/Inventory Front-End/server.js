@@ -1,108 +1,109 @@
 // load the things we need
-const express = require('express');
-const bodyParser = require('body-parser');
-const { adminUsername, adminPassword } = require('./config');
-const axios = require('axios');
-const app = express();
+var express = require('express');
+var app = express();
+const bodyParser  = require('body-parser');
 
-app.use(bodyParser.urlencoded({ extended: true }));
+// required module to make calls to a REST API
+const axios = require('axios');
+
+app.use(bodyParser.urlencoded());
 
 // set the view engine to ejs
 app.set('view engine', 'ejs');
 
 // use res.render to load up an ejs view file
-app.get('/', function (req, res) {
-    res.render('pages/index.ejs', { login: "false" });
+
+app.get('/', function(req, res) {
+    res.render('pages/index.ejs', {login:"false"});
 });
 
-// main function page
-app.get('/main', function (req, res) {
+//main function page
+app.get('/main', function(req, res) {
     res.render('pages/main.ejs', {
-        auth: true
-    });
+        auth: true}
+    );
 });
 
-// logout
-app.get('/logout', function (req, res) {
-    res.render('pages/index.ejs', { login: "logout" });
+app.get('/beverage_management', function(req, res) {
+    res.render('pages/beverage.ejs');
 });
 
-// login
-app.post('/process_login', function (req, res) {
-    const user = req.body.username;
-    const password = req.body.password;
+//logout 
+app.get('/logout', function(req, res) {
+    res.render('pages/index.ejs', {login:"logout"});
+});
 
-    if (user === adminUsername && password === adminPassword) {
+//login
+app.post('/process_login', function(req, res){
+    var user = req.body.username;
+    var password = req.body.password;
+
+    if(user === 'admin' && password === 'brucestore')
+    {
         res.render('pages/main.ejs', {
             auth: true
         });
-    } else {
-        res.render('pages/index.ejs', { login: "true" });
     }
-});
-
-// beverages page
-app.get('/beverage', async function (req, res) {
-    try {
-        const response = await axios.get('http://127.0.0.1:5000/api/beverages');
-        const beverages = response.data;
-        res.render('pages/beverage', { beverages });
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Error fetching beverages');
+    else
+    {
+        res.render('pages/index.ejs', {login:"true"});
     }
+  })
+
+  
+app.get('/beverage', function(req, res) {
+
+    //local API call to my Python REST API that delivers beverages table data from DB
+    axios.get(`http://127.0.0.1:5000/api/beverages`)
+    .then((response)=>{
+        
+        var beverage = response.data;
+        var tagline = "Inventory";
+        console.log(beverage);
+         // use res.render to load up an ejs view file
+        res.render('pages/dashboard', {
+            beverage: beverage,
+            tagline: tagline
+            });
+        }); 
 });
 
-// add beverage
-app.post('/add_beverage', function (req, res) {
-    const bevname = req.body.bevname;
-    const bevprice = req.body.bevprice;
-    const bevoh = req.body.bevoh;
+app.post('/add_beverage', function(req, res){
+    // create a variable to hold the product name from the request body
+    var bevname= req.body.bevname
+    // create a variable to hold the product price from the request body
+    var bevprice = req.body.bevprice
+    // create a variable to hold the product on hand from the request body
+    var bevoh = req.body.bevoh
+    
+    axios.post('http://127.0.0.1:5000/api/beverages', {bev_name:bevname, bev_price:bevprice, bev_onhand:bevoh})
+   console.log("Name is: " + bevname);
+   console.log("Price is: " + bevprice);
+   console.log("OnHand is: " + bevoh);
 
-    axios.post('http://127.0.0.1:5000/api/beverages', { bev_name: bevname, bev_price: bevprice, bev_onhand: bevoh })
-        .then(() => {
-            console.log("Name is: " + bevname);
-            console.log("Price is: " + bevprice);
-            console.log("OnHand is: " + bevoh);
-            res.redirect('/beverage');
-        })
-        .catch(error => {
-            console.error(error);
-            res.status(500).send('Error adding beverage');
-        });
-});
+   res.redirect('/beverage_management')
+  
+  });
 
-// update beverage
-app.post('/update_beverage/:bevname', function (req, res) {
-    const bevname = req.params.bevname;
-    const newoh = req.body.newoh;
+app.post('/update_beverage/:bevname', function(req, res){
+    var bevname = req.params.bevname;
+    var newoh = req.body.newoh;
+  
+    axios.put('http://127.0.0.1:5000/api/beverages', {bev_name:bevname, bev_onhand:newoh})
+   console.log("bevname updated is: " + bevname);
+   console.log("Current OnHand: " + newoh);
 
-    axios.put('http://127.0.0.1:5000/api/beverages', { bev_name: bevname, bev_onhand: newoh })
-        .then(() => {
-            console.log("bevname updated is: " + bevname);
-            console.log("Current OnHand: " + newoh);
-            res.redirect('/beverage');
-        })
-        .catch(error => {
-            console.error(error);
-            res.status(500).send('Error updating beverage');
-        });
-});
+    res.redirect('/beverage')
+    });
 
-// delete beverage
-app.get('/delete/:bevname', function (req, res) {
-    const bevname = req.params.bevname;
+app.get('/delete/:bevname', function(req, res){
+    var bevname = req.params.bevname;
+  
+    axios.delete('http://127.0.0.1:5000/api/beverages', {data:{bev_name:bevname}})
+   console.log("bevname deleted is: " + bevname);
 
-    axios.delete('http://127.0.0.1:5000/api/beverages', { data: { bev_name: bevname } })
-        .then(() => {
-            console.log("bevname deleted is: " + bevname);
-            res.redirect('/beverage');
-        })
-        .catch(error => {
-            console.error(error);
-            res.status(500).send('Error deleting beverage');
-        });
-});
+    res.redirect('/beverage')
+    });
 
 app.listen(9000);
 console.log('9000 is the magic port');
