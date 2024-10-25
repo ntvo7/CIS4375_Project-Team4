@@ -58,17 +58,34 @@ app.get('/logout', function(req, res) {
 app.post('/process_login', function(req, res){
     var user = req.body.username;
     var password = req.body.password;
+    axios.get(`http://127.0.0.1:5000/api/beverages`)
+    .then((response) => {
+        const beverages = response.data;
+        const tagline = "Low Stock Products";
 
-    if(user === 'admin' && password === 'brucestore')
-    {
-        res.render('pages/main.ejs', {
-            auth: true
-        });
-    }
-    else
-    {
-        res.render('pages/index.ejs', {login:"true"});
-    }
+        // Filter beverages where on-hand count is less than 10
+        const filteredBeverages = beverages.filter(beverage => beverage.bev_onhand < 10);
+
+        console.log(filteredBeverages);
+
+        if(user === 'admin' && password === 'brucestore')
+            {
+                // Render the page with filtered beverages for the chart
+                res.render('pages/main', { 
+                    beverage: filteredBeverages,
+                    tagline: tagline,
+                    auth: true // Pass authentication status
+            })
+            }
+            else
+            {
+                res.render('pages/index.ejs', {login:"true"});
+            }
+    })
+    .catch((error) => {
+        console.error("Error fetching beverages:", error);
+        res.status(500).send("Error fetching beverages");
+    })
   })
 
   
