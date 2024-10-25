@@ -9,7 +9,7 @@
         <%- include('../partials/header'); %>
         <div class="sidebar">
             <a  href="/main">Home</a>
-            <a class="active" href="/beverage">Dashboard</a>
+            <a class="active" href="/filter_beverages">Dashboard</a>
             <a href="/beverage_management">Inventory Management</a>
             <a href="/logout">Log off</a>
             
@@ -20,32 +20,59 @@
     <main>
         <th>
         <div>
-            <center><ul><h2><%= locals.tagline %></h2></ul>
+            <center><h2><%= locals.tagline %></h2></center>
+            <button onclick="location.href='/filter_beverages?nfilter=&filter='">Show All</button>
+            <form method="GET" action="/filter_beverages">
+            
+                <label for="nfilter">Filter by Product Name:</label>
+                <input type="text" id="nfilter" name="nfilter" placeholder="Enter Product Name" value="<%= nfilter %>" />
+            
+                <label for="filter">Category:</label>
+                <select name="filter" id="filter">
+                    <option value="">All</option>
+                    <option value="beverage" <%= filter === 'beverage' ? 'selected' : '' %>>Beverage</option>
+                    <option value="snack" <%= filter === 'snack' ? 'selected' : '' %>>Snack</option>
+                    <option value="alcohol" <%= filter === 'alcohol' ? 'selected' : '' %>>Alcohol</option>
+                    <option value="cigarette" <%= filter === 'cigarette' ? 'selected' : '' %>>Cigarette</option>
+                    <option value="other" <%= filter === 'other' ? 'selected' : '' %>>Other</option>
+                </select>
+            
+                <input type="submit" value="Filter" />
+            </form>
+
                     <table class="table table-hover scrolldown">
                         <thead>
                         <tr>
-                          <th>Name</th>
+                          <th>Product</th>
                           <th>Price</th>
                           <th style="text-align: right">Onhand</th>
                         </tr>
                         </thead>
                         <tbody>
-                <% if (locals.beverage) { %>
-                    <% locals.beverage.forEach(function(beverages) { %>
-                        <tr style="font-weight:normal">
-                          <td><%= beverages.bev_name %></td>
-                          <td>$<%= beverages.bev_price %></td>
-                          <td align="right"><%= beverages.bev_onhand %></td>
-                          <td align="right">
-                            <form action="/update_beverage/<%= beverages.bev_name %>" method="post">
-                                <input size="4" type="text" id="newoh" name="newoh" placeholder="OnHand" required autofocus>
-                                <input style="font-weight:bold; background-color: lightskyblue;" type="submit" value="Update">
-                            </form>
-                          </td>
-                          <td align="right"><button class="button button3" style="font-weight:bold;" onclick="location.href='/delete/<%= beverages.bev_name %>'">X</button></td>
-                        </tr>
-                    <% }); %>
-                <% } %>
+                            <% if (locals.beverage && locals.beverage.length) { %>
+                                <% locals.beverage.forEach(function(beverages) { %>
+                                    <tr style="font-weight:normal">
+                                        <td><%= beverages.bev_name %></td>
+                                        <td>$<%= beverages.bev_price %></td>
+                                        <td align="right"><%= beverages.bev_onhand %></td>
+                                        <td align="right">
+                                            <form action="/update_beverage/<%= beverages.bev_name %>" method="post">
+                                                <input type="hidden" name="nfilter" value="<%= locals.nfilter %>" />
+                                                <input type="hidden" name="filter" value="<%= locals.filter %>" />
+                                                
+                                                <input size="4" type="text" id="newoh" name="newoh" placeholder="OnHand" required autofocus>
+                                                <input style="font-weight:bold; background-color: lightskyblue;" type="submit" value="Update">
+                                            </form>
+                                        </td>
+                                        <td align="right">
+                                            <button class="button button3" style="font-weight:bold;" 
+                                                    onclick="location.href='/delete/<%= beverages.bev_name %>?nfilter=<%= locals.nfilter %>&filter=<%= locals.filter %>'">X</button>
+                                        </td>
+                                    </tr>
+                                <% }); %>
+                            <% } else { %>
+                                <tr><td colspan="5">No beverages found.</td></tr>
+                            <% } %>
                         </tbody>
                       </table>
             </center>

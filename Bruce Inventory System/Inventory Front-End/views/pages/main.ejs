@@ -3,32 +3,83 @@
 
 <head>
     <%- include('../partials/head'); %>
+    <title>Beverages Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Full-screen chart container with horizontal scrolling */
+        .chart-container {
+            position: relative;
+            width: 100%; /* Full width */
+            height: 75vh; /* Full height of the viewport */
+            overflow-x: auto; /* Enable horizontal scrolling */
+            overflow-y: hidden; /* Hide vertical overflow */
+        }
+        /* Style for the canvas */
+        canvas {
+            width: 1000px !important; /* Set a fixed width to enable scrolling */
+            height: 100% !important; /* Fill the height of the container */
+        }
+    </style>
 </head>
 
 <body>
-        <%- include('../partials/header'); %>
-        <div class="sidebar">
-            <a class="active" href="/main">Home</a>
-            <a href="/beverage">Dashboard</a>
-            <a href="/beverage_management">Inventory Management</a>
-            <a href="/logout">Log off</a>
-            
-        </div>
+    <%- include('../partials/header'); %>
+    <div class="sidebar">
+        <a class="active" href="/main">Home</a>
+        <a href="/filter_beverages">Dashboard</a>
+        <a href="/beverage_management">Inventory Management</a>
+        <a href="/logout">Log off</a>
+    </div>
 
-<div class="content">
-    <main >
-
+    <div class="content">
+        <main>
         <% if (locals.auth) { %>
-           WELCOME
-        <br><br>
-        <p> You now have access to the inventory operations of Bruce's Convenience Store</p>
-        <p> System can be accessed through the tabs</p>
-        <% } %>
-    </main>
-    <footer>
-        <%- include('../partials/footer'); %>
-    </footer>
-</div>
+        <h1><%= locals.tagline %></h1>
 
+            <% if (locals.beverage.length > 0) { %>
+                <div class="chart-container">
+                    <canvas id="beverageChart"></canvas>
+                </div>
+                <script>
+                    const ctx = document.getElementById('beverageChart').getContext('2d');
+                    const beverageNames = <%- JSON.stringify(beverage.map(item => item.bev_name)) %>;
+                    const beverageCounts = <%- JSON.stringify(beverage.map(item => item.bev_onhand)) %>;
+
+                    const beverageChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: beverageNames,
+                            datasets: [{
+                                label: 'On Hand Count',
+                                data: beverageCounts,
+                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: false, // Disable responsive to maintain fixed width
+                            maintainAspectRatio: false, // Allow custom aspect ratio
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    title: {
+                                        display: true,
+                                        text: 'Quantity'
+                                    }
+                                }
+                            }
+                        }
+                    });
+                </script>
+            <% } else { %>
+                <p>No beverages with less than 10 on hand.</p>
+            <% } %>
+        <% } %>
+        </main>
+        <footer>
+            <%- include('../partials/footer'); %>
+        </footer>
+    </div>
 </body>
 </html>

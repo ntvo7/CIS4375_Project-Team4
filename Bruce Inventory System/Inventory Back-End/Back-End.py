@@ -69,8 +69,9 @@ def add_beverage():
     newbevname = request_data['bev_name']
     newbevprice = request_data['bev_price']
     newbevoh = request_data['bev_onhand']
+    newbevcat = request_data['bev_category']
     
-    sql = "insert into beverages (bev_name, bev_price, bev_onhand) values ('%s', '%s','%s')" % (newbevname, newbevprice, newbevoh)
+    sql = "insert into beverages (bev_name, bev_price, bev_onhand, bev_category) values ('%s', '%s','%s', '%s')" % (newbevname, newbevprice, newbevoh, newbevcat)
     execute_myquery(con, sql)
         
     return "Add request successful"
