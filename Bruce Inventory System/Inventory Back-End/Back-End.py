@@ -47,7 +47,7 @@ def execute_read_myquery(connection, query):
     except Error as e:
         print('Error is:', e)
 
-con = create_con('localhost','root','Eggro2000!',"brucestore")
+con = create_con('localhost','root','1234',"brucestore")
 
 masterUsername = 'admin'
 masterPassword = '5393a423c38ab58e5bddd35c160deabcdd11f7242fa37250dfa49c9e7313cda4' #hash SHA256 value of 'brucestore' as the password
