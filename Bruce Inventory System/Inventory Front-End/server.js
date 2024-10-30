@@ -46,7 +46,7 @@ app.get('/main', (req, res) => {
 
 
 app.get('/beverage_management', function(req, res) {
-    res.render('pages/beverage.ejs');
+    res.render('pages/report.ejs');
 });
 
 //logout 
@@ -139,13 +139,17 @@ app.get('/filter_beverages', (req, res) => {
 
 app.post('/add_beverage', function(req, res){
     // create a variable to hold the product name from the request body
-    var bevname= req.body.bevname
+    var bevname= req.body.bevname;
     // create a variable to hold the product price from the request body
-    var bevprice = req.body.bevprice
+    var bevprice = req.body.bevprice;
     // create a variable to hold the product on hand from the request body
-    var bevoh = req.body.bevoh
+    var bevoh = req.body.bevoh;
     // create a variable to hold the product on hand from the request body
-    var bevcat = req.body.cats
+    var bevcat = req.body.cats;
+
+        // Capture the filter values from the request body
+    const currentNameFilter = req.body.nfilter || ''; // Current name filter
+    const currentCategoryFilter = req.body.filter || ''; // Current category filter
     
     axios.post('http://127.0.0.1:5000/api/beverages', {bev_name:bevname, bev_price:bevprice, bev_onhand:bevoh, bev_category:bevcat})
    console.log("Name is: " + bevname);
@@ -153,43 +157,58 @@ app.post('/add_beverage', function(req, res){
    console.log("OnHand is: " + bevoh);
    console.log("Category is:" + bevcat);
 
-   res.redirect('/beverage_management')
+   res.redirect(`/filter_beverages?nfilter=${encodeURIComponent(currentNameFilter)}&filter=${encodeURIComponent(currentCategoryFilter)}`);
   
   });
 
-  app.post('/update_beverage/:bevname', function(req, res) {
-    const bevname = req.params.bevname;
-    const newoh = req.body.newoh;
+  app.post('/update_beverage/:bev_id', function(req, res) {
+    const bevid = req.params.bev_id;
+    const bevname = req.body.bevname;
+    const newPrice = req.body.bevprice; // New price
+    const newOnHand = req.body.bevoh; // New on-hand quantity
+    const newCategory = req.body.cats; // New category
 
-    // Capture the filter values from the request body
-    const currentNameFilter = req.body.nfilter || ''; // Current name filter
-    const currentCategoryFilter = req.body.filter || ''; // Current category filter
+    // Capture the filter values
+    const currentNameFilter = req.body.nfilter || '';
+    const currentCategoryFilter = req.body.filter || '';
 
     // Update the beverage in the database
-    axios.put('http://127.0.0.1:5000/api/beverages', { bev_name: bevname, bev_onhand: newoh })
-        .then(() => {
-            console.log("Beverage updated: " + bevname);
-            console.log("Current OnHand: " + newoh);
-
-            // Redirect with the current filter values
-            res.redirect(`/filter_beverages?nfilter=${encodeURIComponent(currentNameFilter)}&filter=${encodeURIComponent(currentCategoryFilter)}`);
-        })
-        .catch((error) => {
-            console.error("Error updating beverage:", error);
-            res.status(500).send("Error updating beverage");
+    axios.put('http://127.0.0.1:5000/api/beverages', {
+        bev_id: bevid,
+        bev_name: bevname,
+        bev_price: newPrice,
+        bev_onhand: newOnHand,
+        bev_category: newCategory
+    })
+    .then(() => {
+        console.log("Beverage updated:", {
+            bevid: bevid, 
+            name: bevname, 
+            price: newPrice, 
+            onhand: newOnHand, 
+            category: newCategory 
         });
+        // Redirect with current filter values
+        res.redirect(`/filter_beverages?nfilter=${encodeURIComponent(currentNameFilter)}&filter=${encodeURIComponent(currentCategoryFilter)}`);
+    })
+    .catch((error) => {
+        console.error("Error updating beverage:", error);
+        res.status(500).send("Error updating beverage");
+    });
 });
 
-app.get('/delete/:bevname', function(req, res) { 
-    const bevname = req.params.bevname;
 
-    // Capture filter values from the query parameters
-    const nameFilter = req.query.nfilter || ''; // Name filter
-    const categoryFilter = req.query.filter || ''; // Category filter
 
-    axios.delete('http://127.0.0.1:5000/api/beverages', { data: { bev_name: bevname } })
+app.post('/delete_beverage/:bev_id', function(req, res) {
+    const bevid = req.params.bev_id;
+
+    // Capture filter values from the request body or query parameters
+    const nameFilter = req.body.nfilter || ''; // Name filter
+    const categoryFilter = req.body.filter || ''; // Category filter
+
+    axios.delete('http://127.0.0.1:5000/api/beverages', { data: { bev_id: bevid } })
         .then(() => {
-            console.log("Beverage deleted: " + bevname);
+            console.log("Product ID Deleted: " + bevid);
 
             // Redirect back to the filter route with the current filter values
             res.redirect(`/filter_beverages?nfilter=${encodeURIComponent(nameFilter)}&filter=${encodeURIComponent(categoryFilter)}`);
@@ -199,6 +218,7 @@ app.get('/delete/:bevname', function(req, res) {
             res.status(500).send("Error deleting beverage");
         });
 });
+
 
 
 app.listen(9000);

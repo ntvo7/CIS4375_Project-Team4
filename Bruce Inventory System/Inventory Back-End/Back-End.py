@@ -80,9 +80,9 @@ def add_beverage():
 @app.route('/api/beverages', methods=['DELETE'])
 def delete_beverages_byname():
     request_data = request.get_json()
-    bevtodelete = request_data['bev_name']
+    bevtodelete = request_data['bev_id']
     
-    sql = "delete from beverages where bev_name = '%s'" % (bevtodelete)
+    sql = "delete from beverages where bev_id = '%s'" % (bevtodelete)
     execute_myquery(con, sql)
         
     return "Delete request successful"
@@ -104,12 +104,17 @@ def all_beverages():
 @app.route('/api/beverages', methods=['PUT'])
 def api_put_beverage_byname():
     request_data = request.get_json()
+    bevid = request_data['bev_id']
     bevname = request_data['bev_name']
     newonhand = request_data['bev_onhand']
+    newprice = request_data['bev_price']
+    newcategory = request_data['bev_category']
+
+    # Update the SQL query to modify all relevant fields
+    sql = "UPDATE beverages SET bev_name = '%s', bev_price = '%s', bev_onhand = '%s', bev_category = '%s' WHERE bev_id = '%s'" % (bevname, newprice, newonhand, newcategory, bevid)
     
-    sql = "update beverages set bev_onhand =%s where bev_name = '%s'" %(newonhand, bevname)
     execute_myquery(con, sql)
-        
+
     return "Put active request successful!"
 
 
