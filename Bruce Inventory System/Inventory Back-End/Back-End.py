@@ -62,56 +62,56 @@ def processrequest():
             return '<h1> Authenticated User'
     return make_response('could not find user', 401, {'WWW-authenticate: ': 'Basic realm="login required"'})
 
-#API POST fuction to add beverages into database
-@app.route('/api/beverages', methods=['POST'])
-def add_beverage():
+#API POST fuction to add products into database
+@app.route('/api/stock', methods=['POST'])
+def add_product():
     request_data = request.get_json()
-    newbevname = request_data['bev_name']
-    newbevprice = request_data['bev_price']
-    newbevoh = request_data['bev_onhand']
-    newbevcat = request_data['bev_category']
+    newsname = request_data['s_name']
+    newsprice = request_data['s_price']
+    newsoh = request_data['instock']
+    newscat = request_data['s_category']
     
-    sql = "insert into beverages (bev_name, bev_price, bev_onhand, bev_category) values ('%s', '%s','%s', '%s')" % (newbevname, newbevprice, newbevoh, newbevcat)
+    sql = "insert into stock (s_name, s_price, instock, s_category) values ('%s', '%s','%s', '%s')" % (newsname, newsprice, newsoh, newscat)
     execute_myquery(con, sql)
         
     return "Add request successful"
 
-#API DELETE function to delete beverage by name
-@app.route('/api/beverages', methods=['DELETE'])
-def delete_beverages_byname():
+#API DELETE function to delete product by id
+@app.route('/api/stock', methods=['DELETE'])
+def delete_product_byid():
     request_data = request.get_json()
-    bevtodelete = request_data['bev_id']
+    protodelete = request_data['s_id']
     
-    sql = "delete from beverages where bev_id = '%s'" % (bevtodelete)
+    sql = "delete from stock where s_id = '%s'" % (protodelete)
     execute_myquery(con, sql)
         
     return "Delete request successful"
 
-#API GET to retrieve all beverages
-@app.route('/api/beverages', methods=['GET'])
-def all_beverages():
-    #creating dictionary list of all current beverages
-    sql = "select * from beverages"
+#API GET to retrieve all products
+@app.route('/api/stock', methods=['GET'])
+def all_stock():
+    #creating dictionary list of all current products
+    sql = "select * from stock"
     all = execute_read_myquery(con, sql)
-    beverages = []
+    products = []
     for eachrow in all:
-        if eachrow not in beverages:
-            beverages.append(eachrow)
+        if eachrow not in products:
+            products.append(eachrow)
 
-    return jsonify(beverages)
+    return jsonify(products)
 
-#PUT funtion that updates beverage on hand
-@app.route('/api/beverages', methods=['PUT'])
-def api_put_beverage_byname():
+#PUT funtion that updates product on hand
+@app.route('/api/stock', methods=['PUT'])
+def api_put_product_byname():
     request_data = request.get_json()
-    bevid = request_data['bev_id']
-    bevname = request_data['bev_name']
-    newonhand = request_data['bev_onhand']
-    newprice = request_data['bev_price']
-    newcategory = request_data['bev_category']
+    sid = request_data['s_id']
+    sname = request_data['s_name']
+    newonhand = request_data['instock']
+    newprice = request_data['s_price']
+    newcategory = request_data['s_category']
 
     # Update the SQL query to modify all relevant fields
-    sql = "UPDATE beverages SET bev_name = '%s', bev_price = '%s', bev_onhand = '%s', bev_category = '%s' WHERE bev_id = '%s'" % (bevname, newprice, newonhand, newcategory, bevid)
+    sql = "UPDATE stock SET s_name = '%s', s_price = '%s', instock = '%s', s_category = '%s' WHERE s_id = '%s'" % (sname, newprice, newonhand, newcategory, sid)
     
     execute_myquery(con, sql)
 

@@ -3,7 +3,7 @@
 
 <head>
     <%- include('../partials/head'); %>
-    <title>Beverages Chart</title>
+    <title>Products Chart</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         /* Full-screen chart container with horizontal scrolling */
@@ -26,8 +26,8 @@
     <%- include('../partials/header'); %>
     <div class="sidebar">
         <a class="active" href="/main">Home</a>
-        <a href="/filter_beverages">Dashboard</a>
-        <a href="/beverage_management">Reports</a>
+        <a href="/filter_products">Dashboard</a>
+        <a href="/product_management">Reports</a>
         <a href="/logout">Log off</a>
     </div>
 
@@ -36,22 +36,22 @@
         <% if (locals.auth) { %>
         <h1><%= locals.tagline %></h1>
 
-            <% if (locals.beverage.length > 0) { %>
+            <% if (locals.product.length > 0) { %>
                 <div class="chart-container">
-                    <canvas id="beverageChart"></canvas>
+                    <canvas id="productChart"></canvas>
                 </div>
                 <script>
-                    const ctx = document.getElementById('beverageChart').getContext('2d');
-                    const beverageNames = <%- JSON.stringify(beverage.map(item => item.bev_name)) %>;
-                    const beverageCounts = <%- JSON.stringify(beverage.map(item => item.bev_onhand)) %>;
+                    const ctx = document.getElementById('productChart').getContext('2d');
+                    const productNames = <%- JSON.stringify(product.map(item => item.s_name)) %>;
+                    const productCounts = <%- JSON.stringify(product.map(item => item.instock)) %>;
 
-                    const beverageChart = new Chart(ctx, {
+                    const productChart = new Chart(ctx, {
                         type: 'bar',
                         data: {
-                            labels: beverageNames,
+                            labels: productNames,
                             datasets: [{
                                 label: 'On Hand Count',
-                                data: beverageCounts,
+                                data: productCounts,
                                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                                 borderColor: 'rgba(75, 192, 192, 1)',
                                 borderWidth: 1
@@ -73,7 +73,7 @@
                     });
                 </script>
             <% } else { %>
-                <p>No beverages with less than 10 on hand.</p>
+                <p>No products with less than 10 on hand.</p>
             <% } %>
         <% } %>
         </main>

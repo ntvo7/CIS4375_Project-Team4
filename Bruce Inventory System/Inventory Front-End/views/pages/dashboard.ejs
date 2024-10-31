@@ -9,8 +9,8 @@
     <%- include('../partials/header'); %>
     <div class="sidebar">
         <a href="/main">Home</a>
-        <a class="active" href="/filter_beverages">Dashboard</a>
-        <a href="/beverage_management">Reports</a>
+        <a class="active" href="/filter_products">Dashboard</a>
+        <a href="/product_management">Reports</a>
         <a href="/logout">Log off</a>
     </div>
 
@@ -19,9 +19,9 @@
             <div>
                 <center>
                     <h2><%= locals.tagline %></h2>
-                    <button onclick="location.href='/filter_beverages?nfilter=&filter='">Show All</button>
+                    <button onclick="location.href='/filter_products?nfilter=&filter='">Show All</button>
                     <button id="addProductBtn">Add Product</button>
-                    <form method="GET" action="/filter_beverages">
+                    <form method="GET" action="/filter_products">
                         <label for="nfilter">Filter by Product Name:</label>
                         <input type="text" id="nfilter" name="nfilter" placeholder="Enter Product Name" value="<%= nfilter %>" />
                         <label for="filter">Category:</label>
@@ -47,19 +47,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <% if (locals.beverage && locals.beverage.length) { %>
-                                <% locals.beverage.forEach(function(beverages) { %>
+                            <% if (locals.product && locals.product.length) { %>
+                                <% locals.product.forEach(function(products) { %>
                                     <tr style="font-weight:normal" 
-                                        onclick="openUpdateModal('<%= beverages.bev_name %>', <%= beverages.bev_price %>, <%= beverages.bev_onhand %>, '<%= beverages.bev_category %>', <%= beverages.bev_id %>)">
-                                        <td><%= beverages.bev_name %></td>
-                                        <td>$<%= beverages.bev_price %></td>
-                                        <td><%= beverages.bev_category %></td>
-                                        <td><%= beverages.bev_onhand %></td>
+                                        onclick="openUpdateModal('<%= products.s_name %>', <%= products.s_price %>, <%= products.instock %>, '<%= products.s_category %>', <%= products.s_id %>)">
+                                        <td><%= products.s_name %></td>
+                                        <td>$<%= products.s_price %></td>
+                                        <td><%= products.s_category %></td>
+                                        <td><%= products.instock %></td>
 
                                     </tr>
                                 <% }); %>
                             <% } else { %>
-                                <tr><td colspan="3">No beverages found.</td></tr>
+                                <tr><td colspan="3">No products found.</td></tr>
                             <% } %>
                         </tbody>
                     </table>
@@ -72,13 +72,13 @@
             <div class="modal-content">
                 <span style="text-align: end;" class="close" onclick="closeModal('addModal')">&times;</span>
                 <h2>Add New Product</h2>
-                <form action="/add_beverage" method="post">
+                <form action="/add_product" method="post">
                     <label for="addName">Product Name:</label>
-                    <input type="text" id="addName" name="bevname" required><br>
+                    <input type="text" id="addName" name="proname" required><br>
                     <label for="addPrice">Price:</label>
-                    <input type="number" id="addPrice" name="bevprice" step="0.01" required><br>
+                    <input type="number" id="addPrice" name="proprice" step="0.01" required><br>
                     <label for="addOnhand">On Hand:</label>
-                    <input type="number" id="addOnhand" name="bevoh" required><br>
+                    <input type="number" id="addOnhand" name="prooh" required><br>
                     <label class="form-label" for="addCats">Category:</label>
                     <select name="cats" id="addCats" required>
                         <option value="">Select a category...</option>
@@ -102,11 +102,11 @@
         <h2>Update Product</h2>
         <form id="updateForm" action="" method="post">
             <label for="updateName">Product Name:</label>
-            <input type="text" id="updateName" name="bevname" required><br>
+            <input type="text" id="updateName" name="proname" required><br>
             <label for="updatePrice">Price:</label>
-            <input type="number" id="updatePrice" name="bevprice" step="0.01" required><br>
+            <input type="number" id="updatePrice" name="proprice" step="0.01" required><br>
             <label for="updateOnhand">On Hand:</label>
-            <input type="number" id="updateOnhand" name="bevoh" required><br>
+            <input type="number" id="updateOnhand" name="prooh" required><br>
             <label class="form-label" for="updateCats">Category:</label>
             <select name="cats" id="updateCats" required>
                 <option value="">Select a category...</option>
@@ -120,7 +120,7 @@
             <button type="button" class="delete-button" onclick="deleteProduct()">Delete Product</button>
             <input type="hidden" name="nfilter" value="<%= locals.nfilter %>" />
             <input type="hidden" name="filter" value="<%= locals.filter %>" />
-            <input type="hidden" id="deleteBevId" name="bev_id" value=""> <!-- Hidden field for bev_id -->
+            <input type="hidden" id="deleteProId" name="s_id" value=""> <!-- Hidden field for s_id -->
         </form>
     </div>
 </div>
@@ -158,15 +158,15 @@
         }
 
 // Function to open the update modal with pre-filled values
-function openUpdateModal(name, price, onhand, category, bev_id) {
+function openUpdateModal(name, price, onhand, category, s_id) {
         document.getElementById('updateName').value = name; // Set name
         document.getElementById('updatePrice').value = price; // Set price
         document.getElementById('updateOnhand').value = onhand; // Set on hand
         document.getElementById('updateCats').value = category; // Set category
-        document.getElementById('deleteBevId').value = bev_id; // Set hidden input for bev_id
+        document.getElementById('deleteProId').value = s_id; // Set hidden input for s_id
 
         // Set the form action for updating
-        document.getElementById('updateForm').action = `/update_beverage/${encodeURIComponent(bev_id)}`; // Update action URL
+        document.getElementById('updateForm').action = `/update_product/${encodeURIComponent(s_id)}`; // Update action URL
 
         // Show the update modal
         updateModal.style.display = "block";
@@ -175,13 +175,13 @@ function openUpdateModal(name, price, onhand, category, bev_id) {
     // Function to delete the product
     function deleteProduct() {
         const productName = document.getElementById('updateName').value;
-        const productid = document.getElementById('deleteBevId').value; // Get bev_id from hidden input
+        const productid = document.getElementById('deleteProId').value; // Get s_id from hidden input
         const confirmDelete = confirm(`Are you sure you want to delete "${productName}"?`);
 
         if (confirmDelete) {
             const form = document.getElementById('updateForm');
-            form.action = `/delete_beverage/${encodeURIComponent(productid)}`; // Set the action to delete
-            form.submit(); // Submit the form to delete the beverage
+            form.action = `/delete_product/${encodeURIComponent(productid)}`; // Set the action to delete
+            form.submit(); // Submit the form to delete the product
         }
     }
 
