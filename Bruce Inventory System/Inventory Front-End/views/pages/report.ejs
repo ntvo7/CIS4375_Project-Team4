@@ -6,23 +6,54 @@
 </head>
 
 <body>
-        <%- include('../partials/header'); %>
-        <div class="sidebar">
-            <a  href="/main">Home</a>
-            <a href="/filter_products">Dashboard</a>
-            <a class="active" href="/product_management">Reports</a>
-            <a href="/logout">Log off</a>    
+    <%- include('../partials/header'); %>
+    <div class="sidebar">
+        <a href="/main">Home</a>
+        <a href="/filter_products">Dashboard</a>
+        <a class="active" href="/product_management">Reports</a>
+        <a href="/logout">Log off</a>    
     </div>
 
-<div class="content">
-<main>
+    <div class="content">
+        <main>
+            <h1>Report Title</h1>
+            <p>This is a sample report generated for printing purposes. You can include tables, images, and other content here.</p>
+            
+            <h2>Report Details</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Description</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Product A</td>
+                        <td>Details about Product A</td>
+                        <td>10</td>
+                        <td>$100</td>
+                    </tr>
+                    <tr>
+                        <td>Product B</td>
+                        <td>Details about Product B</td>
+                        <td>5</td>
+                        <td>$50</td>
+                    </tr>
+                    <!-- Add more rows as needed -->
+                </tbody>
+            </table>
 
-</main>
+            <h2>Summary</h2>
+            <p>This section can include a summary of the report, conclusions, or any other relevant information.</p>
+        </main>
 
-<footer>
-    <%- include('../partials/footer'); %>
-</footer>
+        <footer>
+            <%- include('../partials/footer'); %>
+        </footer>
 
-</div>
+    </div>
 </body>
 </html>

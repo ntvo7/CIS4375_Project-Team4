@@ -8,6 +8,8 @@ import mysql.connector
 from mysql.connector import Error
 import hashlib
 
+from datetime import datetime
+
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 
@@ -47,7 +49,7 @@ def execute_read_myquery(connection, query):
     except Error as e:
         print('Error is:', e)
 
-con = create_con('localhost','root','brucestore',"brucestore")
+con = create_con('localhost','root','Eggro2000!',"brucestore")
 
 masterUsername = 'admin'
 masterPassword = '5393a423c38ab58e5bddd35c160deabcdd11f7242fa37250dfa49c9e7313cda4' #hash SHA256 value of 'brucestore' as the password
@@ -73,7 +75,12 @@ def add_product():
     
     sql = "insert into stock (s_name, s_price, instock, s_category) values ('%s', '%s','%s', '%s')" % (newsname, newsprice, newsoh, newscat)
     execute_myquery(con, sql)
-        
+
+    sql_sid = "SELECT * FROM `stock` WHERE s_id=(SELECT MAX(s_id) FROM `stock`);"
+    latest_id = execute_read_myquery(con, sql_sid)
+    sql2 = "insert into stock_change (s_name, s_id, newstock, up_date) values ('%s', '%s','%s', '%s')" % (newsname, latest_id[0]["s_id"], newsoh, datetime.today().strftime('%Y-%m-%d'))
+    execute_myquery(con, sql2)
+    
     return "Add request successful"
 
 #API DELETE function to delete product by id
@@ -107,13 +114,23 @@ def api_put_product_byname():
     sid = request_data['s_id']
     sname = request_data['s_name']
     newonhand = request_data['instock']
-    newprice = request_data['s_price']
+    newsprice = request_data['s_price']
     newcategory = request_data['s_category']
 
-    # Update the SQL query to modify all relevant fields
-    sql = "UPDATE stock SET s_name = '%s', s_price = '%s', instock = '%s', s_category = '%s' WHERE s_id = '%s'" % (sname, newprice, newonhand, newcategory, sid)
+    sql_check_stock = "SELECT instock, s_price FROM stock WHERE s_id = %s" % sid
+    current_stock = execute_read_myquery(con, sql_check_stock)
     
+    if current_stock[0]['instock'] != int(newonhand):
+        sql2 = "insert into stock_change (s_name, s_id, newstock, up_date) values ('%s', '%s','%s', '%s')" % (sname, sid, newonhand, datetime.today().strftime('%Y-%m-%d'))
+        execute_myquery(con, sql2)
+    if current_stock[0]['s_price'] != float(newsprice):
+        sql3 = "insert into price_change (s_name, s_id, newprice, up_date) values ('%s', '%s','%s', '%s')" % (sname, sid, newsprice, datetime.today().strftime('%Y-%m-%d'))
+        execute_myquery(con, sql3)
+
+    # Update the SQL query to modify all relevant fields
+    sql = "UPDATE stock SET s_name = '%s', s_price = '%s', instock = '%s', s_category = '%s' WHERE s_id = '%s'" % (sname, newsprice, newonhand, newcategory, sid)
     execute_myquery(con, sql)
+
 
     return "Put active request successful!"
 

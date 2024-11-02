@@ -44,7 +44,7 @@
                     const ctx = document.getElementById('productChart').getContext('2d');
                     const productNames = <%- JSON.stringify(product.map(item => item.s_name)) %>;
                     const productCounts = <%- JSON.stringify(product.map(item => item.instock)) %>;
-
+                
                     const productChart = new Chart(ctx, {
                         type: 'bar',
                         data: {
@@ -66,12 +66,19 @@
                                     title: {
                                         display: true,
                                         text: 'Quantity'
+                                    },
+                                    ticks: {
+                                        stepSize: 1, // Ensure whole numbers are displayed
+                                        callback: function(value) {
+                                            return Number.isInteger(value) ? value : ''; // Show only whole numbers
+                                        }
                                     }
                                 }
                             }
                         }
                     });
                 </script>
+                
             <% } else { %>
                 <p>No products with less than 10 on hand.</p>
             <% } %>
