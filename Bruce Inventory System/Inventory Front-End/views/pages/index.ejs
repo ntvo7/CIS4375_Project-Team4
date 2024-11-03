@@ -1,50 +1,197 @@
 <!DOCTYPE html>
 <html lang="en">
-    
-<style>
-    body { padding-top:50px; }
-</style>
-
 <head>
     <%- include('../partials/head'); %>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #74ebd5, #acb6e5);
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        main {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            animation: fadeIn 1s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 500px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-size: 2.5rem;
+            font-family: 'Trebuchet MS', sans-serif;
+        }
+
+        .welcome-message {
+            color: #555;
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            font-family: 'Trebuchet MS', sans-serif;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+            position: relative;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            margin-top: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            transition: border 0.3s, box-shadow 0.3s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-control:focus {
+            border-color: #28a745;
+            box-shadow: 0 0 10px rgba(40, 167, 69, 0.3);
+            outline: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, #28a745, #85d992);
+            color: #fff;
+            border: none;
+            padding: 0.75rem;
+            width: 100%;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: transform 0.2s, box-shadow 0.3s, background 0.4s;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.2);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(90deg, #218838, #28a745);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(40, 167, 69, 0.4);
+        }
+
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+            border: 2px solid transparent;
+            background: linear-gradient(90deg, #28a745, #218838);
+            background-clip: padding-box;
+            animation: glow 2s linear infinite;
+        }
+
+        @keyframes glow {
+            0% {
+                box-shadow: 0 0 5px rgba(40, 167, 69, 0.2);
+            }
+            50% {
+                box-shadow: 0 0 15px rgba(40, 167, 69, 0.5);
+            }
+            100% {
+                box-shadow: 0 0 5px rgba(40, 167, 69, 0.2);
+            }
+        }
+
+        .alert {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border-radius: 10px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+
+        .form-group i {
+            position: absolute;
+            top: 50%;
+            left: 10px;
+            transform: translateY(-50%);
+            color: #28a745;
+        }
+
+        .form-control-padding {
+            padding-left: 2.5rem;
+        }
+
+        .footer-text {
+            margin-top: 2rem;
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
 </head>
+<body>
 
-<body class="container">
-
-    <% if(login =="true"){ %>
+    <% if (login == "true") { %>
     <div class="alert alert-danger">
-        <strong>Incorrect Login</strong>
-      </div>
+        <i class="fas fa-exclamation-triangle"></i>&nbsp;<strong>Incorrect Login</strong>
+    </div>
     <% } %>
-    <% if(login =="logout"){ %>
-        <div class="alert alert-warning">
-            <strong>Logged Out</strong>
-          </div>
+    
+    <% if (login == "logout") { %>
+    <div class="alert alert-warning">
+        <i class="fas fa-info-circle"></i>&nbsp;<strong>Logged Out</strong>
+    </div>
     <% } %>
-      
+
     <main>
-        <center><h1>Bruce's Convenience Store</h1></center>
-        <div>
-            <form action="/process_login" method="post">
-                <div class="form-group">
-                    <label for="exampleInputEmail1" class="form-label">User name</label>
-                    <input type="text" id="username" name="username" class="form-control" placeholder="Username" required
-                    autofocus>
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputPassword1" class="form-label">Password</label>
-                    <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password"
-                    required>
-                 </div>
-                <input value="Log In" class="btn btn-lg btn-primary btn-block" type="submit">
-            </form>
-        </div>
+        <h1>Stop Mini Mart</h1>
+        <div class="welcome-message">Welcome back, Bruce</div>
+        <form action="/process_login" method="post">
+            <div class="form-group">
+                <i class="fas fa-user"></i>
+                <label for="username" class="form-label">User name</label>
+                <input type="text" id="username" name="username" class="form-control form-control-padding" placeholder="Username" required autofocus>
+            </div>
+            <div class="form-group">
+                <i class="fas fa-lock"></i>
+                <label for="inputPassword" class="form-label">Password</label>
+                <input type="password" name="password" id="inputPassword" class="form-control form-control-padding" placeholder="Password" required>
+            </div>
+            <input value="Log In" class="btn-primary" type="submit">
+        </form>
+        <div class="footer-text">@startburn technology</div>
     </main>
 
-    <footer>
-        <%- include('../partials/footer'); %>
-    </footer>
-
 </body>
-
 </html>

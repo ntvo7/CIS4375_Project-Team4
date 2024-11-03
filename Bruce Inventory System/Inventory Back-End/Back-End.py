@@ -1,5 +1,5 @@
 #Bruce Store Inventory Back-End Group 4
-
+#initial 
 import flask
 from flask import jsonify
 from flask import request, make_response
@@ -13,6 +13,7 @@ from datetime import datetime
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 
+###################################################################################################################
 #connect to database (based on classwork)
 def create_con(hostname,uname,passwd,dname):
     connection = None
@@ -49,8 +50,9 @@ def execute_read_myquery(connection, query):
     except Error as e:
         print('Error is:', e)
 
-con = create_con('localhost','root','Eggro2000!',"brucestore")
+con = create_con('127.0.0.1','root','!r00tpwd',"brucestore")
 
+##################################login function, authentication###################################################
 masterUsername = 'admin'
 masterPassword = '5393a423c38ab58e5bddd35c160deabcdd11f7242fa37250dfa49c9e7313cda4' #hash SHA256 value of 'brucestore' as the password
 
@@ -64,6 +66,8 @@ def processrequest():
             return '<h1> Authenticated User'
     return make_response('could not find user', 401, {'WWW-authenticate: ': 'Basic realm="login required"'})
 
+
+############################CRUD OPS Back End#################################################
 #API POST fuction to add products into database
 @app.route('/api/stock', methods=['POST'])
 def add_product():

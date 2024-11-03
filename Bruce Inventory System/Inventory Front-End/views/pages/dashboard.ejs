@@ -1,17 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <%- include('../partials/dash'); %>
-</head>
+    <style>
+        .sidebar {
+            width: 200px;
+            background: linear-gradient(135deg, #74ebd5, #acb6e5);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
 
+        .sidebar a {
+            display: block;
+            color: #fff;
+            padding: 10px;
+            margin-bottom: 10px;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s, transform 0.2s;
+            font-family: 'Arial', sans-serif;
+            font-weight: bold;
+        }
+
+        .sidebar a i {
+            margin-right: 8px;
+        }
+
+        .sidebar a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .sidebar a.active {
+            background: #28a745;
+            color: #fff;
+            box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: flex-end; /* Aligns the buttons to the right */
+            gap: 10px; /* Adds space between buttons */
+            margin-bottom: 20px; /* Adds spacing below the buttons */
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .btn-show-all {
+            background: linear-gradient(90deg, #3498db, #6dd5fa);
+            box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-show-all:hover {
+            background: linear-gradient(90deg, #2980b9, #57c5e5);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(41, 128, 185, 0.4);
+        }
+
+        .btn-add-product {
+            background: linear-gradient(90deg, #28a745, #85d992);
+            box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn-add-product:hover {
+            background: linear-gradient(90deg, #218838, #66c078);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(33, 136, 56, 0.4);
+        }
+
+        .filter-section {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* Aligns the section to the left */
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .filter-section label {
+            margin-right: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .filter-section input[type="text"],
+        .filter-section select {
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            width: 200px;
+            transition: border 0.3s, box-shadow 0.3s;
+        }
+
+        .filter-section input[type="text"]:focus,
+        .filter-section select:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+            outline: none;
+        }
+
+        .filter-section input[type="submit"] {
+            background: #007bff;
+            color: #fff;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .filter-section input[type="submit"]:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
 <body>
     <%- include('../partials/header'); %>
     <div class="sidebar">
-        <a href="/main">Home</a>
-        <a class="active" href="/filter_products">Dashboard</a>
-        <a href="/product_management">Reports</a>
-        <a href="/logout">Log off</a>
+        <a class="active" href="/main"><i class="fas fa-home"></i> Home</a>
+        <a href="/filter_products"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+        <a href="/product_management"><i class="fas fa-chart-line"></i> Reports</a>
+        <a href="/logout"><i class="fas fa-sign-out-alt"></i> Log off</a>
     </div>
 
     <div class="content">
@@ -19,8 +145,12 @@
             <div>
                 <center>
                     <h2><%= locals.tagline %></h2>
-                    <button onclick="location.href='/filter_products?nfilter=&filter='">Show All</button>
-                    <button id="addProductBtn">Add Product</button>
+                </center>
+                <div class="button-container">
+                    <button class="btn btn-show-all" onclick="location.href='/filter_products?nfilter=&filter='">Show All</button>
+                    <button id="addProductBtn" class="btn btn-add-product">Add Product</button>
+                </div>
+                <div class="filter-section">
                     <form method="GET" action="/filter_products">
                         <label for="nfilter">Filter by Product Name:</label>
                         <input type="text" id="nfilter" name="nfilter" placeholder="Enter Product Name" value="<%= nfilter %>" />
@@ -35,31 +165,33 @@
                         </select>
                         <input type="submit" value="Filter" />
                     </form>
+                </div>
 
-
+                <center>
                     <table class="table table-hover scrolldown">
                         <thead>
                             <tr>
                                 <th>Product</th>
                                 <th>Price</th>
                                 <th>Category</th>
-                                <th>Onhand</th>
+                                <th>Quantity</th>
                             </tr>
                         </thead>
                         <tbody>
                             <% if (locals.product && locals.product.length) { %>
                                 <% locals.product.forEach(function(products) { %>
-                                    <tr style="font-weight:normal" 
+                                    <tr style="font-weight:normal"
                                         onclick="openUpdateModal('<%= products.s_name %>', <%= products.s_price %>, <%= products.instock %>, '<%= products.s_category %>', <%= products.s_id %>)">
                                         <td><%= products.s_name %></td>
                                         <td>$<%= products.s_price %></td>
                                         <td><%= products.s_category %></td>
                                         <td><%= products.instock %></td>
-
                                     </tr>
                                 <% }); %>
                             <% } else { %>
-                                <tr><td colspan="3">No products found.</td></tr>
+                                <tr>
+                                    <td colspan="4">No products found.</td>
+                                </tr>
                             <% } %>
                         </tbody>
                     </table>
@@ -95,35 +227,35 @@
             </div>
         </div>
 
-<!-- Update Product Modal -->
-<div id="updateModal" class="modal">
-    <div class="modal-content">
-        <span style="text-align: end;" class="close" onclick="closeModal('updateModal')">&times;</span>
-        <h2>Update Product</h2>
-        <form id="updateForm" action="" method="post">
-            <label for="updateName">Product Name:</label>
-            <input type="text" id="updateName" name="proname" required><br>
-            <label for="updatePrice">Price:</label>
-            <input type="number" id="updatePrice" name="proprice" step="0.01" required><br>
-            <label for="updateOnhand">On Hand:</label>
-            <input type="number" id="updateOnhand" name="prooh" required><br>
-            <label class="form-label" for="updateCats">Category:</label>
-            <select name="cats" id="updateCats" required>
-                <option value="">Select a category...</option>
-                <option value="Beverage">Beverage</option>
-                <option value="Snack">Snack</option>
-                <option value="Alcohol">Alcohol</option>
-                <option value="Cigarette">Cigarette</option>
-                <option value="Other">Other</option>
-            </select><br>
-            <button type="submit">Update Product</button>
-            <button type="button" class="delete-button" onclick="deleteProduct()">Delete Product</button>
-            <input type="hidden" name="nfilter" value="<%= locals.nfilter %>" />
-            <input type="hidden" name="filter" value="<%= locals.filter %>" />
-            <input type="hidden" id="deleteProId" name="s_id" value=""> <!-- Hidden field for s_id -->
-        </form>
-    </div>
-</div>
+        <!-- Update Product Modal -->
+        <div id="updateModal" class="modal">
+            <div class="modal-content">
+                <span style="text-align: end;" class="close" onclick="closeModal('updateModal')">&times;</span>
+                <h2>Update Product</h2>
+                <form id="updateForm" action="" method="post">
+                    <label for="updateName">Product Name:</label>
+                    <input type="text" id="updateName" name="proname" required><br>
+                    <label for="updatePrice">Price:</label>
+                    <input type="number" id="updatePrice" name="proprice" step="0.01" required><br>
+                    <label for="updateOnhand">On Hand:</label>
+                    <input type="number" id="updateOnhand" name="prooh" required><br>
+                    <label class="form-label" for="updateCats">Category:</label>
+                    <select name="cats" id="updateCats" required>
+                        <option value="">Select a category...</option>
+                        <option value="Beverage">Beverage</option>
+                        <option value="Snack">Snack</option>
+                        <option value="Alcohol">Alcohol</option>
+                        <option value="Cigarette">Cigarette</option>
+                        <option value="Other">Other</option>
+                    </select><br>
+                    <button type="submit">Update Product</button>
+                    <button type="button" class="delete-button" onclick="deleteProduct()">Delete Product</button>
+                    <input type="hidden" name="nfilter" value="<%= locals.nfilter %>" />
+                    <input type="hidden" name="filter" value="<%= locals.filter %>" />
+                    <input type="hidden" id="deleteProId" name="s_id" value=""> <!-- Hidden field for s_id -->
+                </form>
+            </div>
+        </div>
 
         <footer>
             <%- include('../partials/footer'); %>
@@ -157,34 +289,34 @@
             }
         }
 
-// Function to open the update modal with pre-filled values
-function openUpdateModal(name, price, onhand, category, s_id) {
-        document.getElementById('updateName').value = name; // Set name
-        document.getElementById('updatePrice').value = price; // Set price
-        document.getElementById('updateOnhand').value = onhand; // Set on hand
-        document.getElementById('updateCats').value = category; // Set category
-        document.getElementById('deleteProId').value = s_id; // Set hidden input for s_id
+        // Function to open the update modal with pre-filled values
+        function openUpdateModal(name, price, onhand, category, s_id) {
+            document.getElementById('updateName').value = name; // Set name
+            document.getElementById('updatePrice').value = price; // Set price
+            document.getElementById('updateOnhand').value = onhand; // Set on hand
+            document.getElementById('updateCats').value = category; // Set category
+            document.getElementById('deleteProId').value = s_id; // Set hidden input for s_id
 
-        // Set the form action for updating
-        document.getElementById('updateForm').action = `/update_product/${encodeURIComponent(s_id)}`; // Update action URL
+            // Set the form action for updating
+            document.getElementById('updateForm').action = `/update_product/${encodeURIComponent(s_id)}`; // Update action URL
 
-        // Show the update modal
-        updateModal.style.display = "block";
-    }
-
-    // Function to delete the product
-    function deleteProduct() {
-        const productName = document.getElementById('updateName').value;
-        const productid = document.getElementById('deleteProId').value; // Get s_id from hidden input
-        const confirmDelete = confirm(`Are you sure you want to delete "${productName}"?`);
-
-        if (confirmDelete) {
-            const form = document.getElementById('updateForm');
-            form.action = `/delete_product/${encodeURIComponent(productid)}`; // Set the action to delete
-            form.submit(); // Submit the form to delete the product
+            // Show the update modal
+            updateModal.style.display = "block";
         }
-    }
 
+        // Function to delete the product
+        function deleteProduct() {
+            const productName = document.getElementById('updateName').value;
+            const productid = document.getElementById('deleteProId').value; // Get s_id from hidden input
+            const confirmDelete = confirm(`Are you sure you want to delete "${productName}"?`);
+
+            if (confirmDelete) {
+                const form = document.getElementById('updateForm');
+                form.action = `/delete_product/${encodeURIComponent(productid)}`; // Set the action to delete
+                form.submit(); // Submit the form to delete the product
+            }
+        }
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
 </body>
 </html>
