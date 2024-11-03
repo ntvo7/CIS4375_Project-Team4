@@ -75,11 +75,6 @@ def add_product():
     
     sql = "insert into stock (s_name, s_price, instock, s_category) values ('%s', '%s','%s', '%s')" % (newsname, newsprice, newsoh, newscat)
     execute_myquery(con, sql)
-
-    sql_sid = "SELECT * FROM `stock` WHERE s_id=(SELECT MAX(s_id) FROM `stock`);"
-    latest_id = execute_read_myquery(con, sql_sid)
-    sql2 = "insert into stock_change (s_name, s_id, newstock, up_date) values ('%s', '%s','%s', '%s')" % (newsname, latest_id[0]["s_id"], newsoh, datetime.today().strftime('%Y-%m-%d'))
-    execute_myquery(con, sql2)
     
     return "Add request successful"
 
@@ -133,6 +128,32 @@ def api_put_product_byname():
 
 
     return "Put active request successful!"
+
+#API GET to retrieve all stock change history
+@app.route('/api/stock_change', methods=['GET'])
+def all_stock_change():
+    #creating dictionary list of all stock change history
+    sql = "select * from stock_change"
+    all = execute_read_myquery(con, sql)
+    stockchanges = []
+    for eachrow in all:
+        if eachrow not in stockchanges:
+            stockchanges.append(eachrow)
+
+    return jsonify(stockchanges)
+
+#API GET to retrieve all price change history
+@app.route('/api/price_change', methods=['GET'])
+def all_price_change():
+    #creating dictionary list of all price change history
+    sql = "select * from price_change"
+    all = execute_read_myquery(con, sql)
+    pricechange = []
+    for eachrow in all:
+        if eachrow not in pricechange:
+            pricechange.append(eachrow)
+
+    return jsonify(pricechange)
 
 
 app.run()
