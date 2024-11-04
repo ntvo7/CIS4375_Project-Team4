@@ -21,7 +21,14 @@
             <div>
                 <center>
                     <h2><%= locals.tagline %></h2>
-                    <button onclick="location.href='/filter_stockchange?nfilter=&startDate=&endDate='">Show All</button><br><br>
+                    <div class="action-buttons">
+                        <button onclick="location.href='/filter_stockchange?nfilter=&startDate=&endDate='" class="btn-primary">
+                            <i class='bx bx-reset'></i> Show All
+                        </button>
+                        <button onclick="window.print()" class="btn-success">
+                            <i class='bx bx-printer'></i> Print History
+                        </button>
+                    </div>
                     <form method="GET" action="/filter_stockchange">
                         <label for="nfilter">Filter by Product:</label>
                         <select id="nfilter" name="nfilter">
