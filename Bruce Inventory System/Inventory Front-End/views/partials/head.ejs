@@ -1,6 +1,391 @@
 <meta charset="UTF-8">
-<title>Bruce's Convenience Store </title>
+<title>Bruce's Convenience Store</title>
 
-<!-- CSS (load bootstrap from a CDN) -->
+<!-- Modern CSS Framework and Icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+<style>
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: #f0f2f5;
+    }
+
+    /* Modern Button Styles */
+    .action-buttons {
+        margin: 1.5rem 0;
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .action-buttons button {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.625rem 1.25rem;
+        border: none;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    /* Button Variants */
+    .btn-primary {
+        background: #4361ee;
+        color: white;
+    }
+    .btn-primary:hover { background: #3a53d0; }
+
+    .btn-success {
+        background: #2ecc71;
+        color: white;
+    }
+    .btn-success:hover { background: #27ae60; }
+
+    .btn-warning {
+        background: #f39c12;
+        color: white;
+    }
+    .btn-warning:hover { background: #d68910; }
+
+    .btn-danger {
+        background: #e74c3c;
+        color: white;
+    }
+    .btn-danger:hover { background: #c0392b; }
+
+    /* Form Controls */
+    .filter-form {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 12px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        margin: 1rem 0;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .form-control {
+        border: 1px solid #e1e4e8;
+        border-radius: 8px;
+        padding: 0.625rem;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: #4361ee;
+        box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+    }
+
+    /* Tables */
+    .table-container {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        padding: 1rem;
+        margin: 1rem 0;
+    }
+
+    .table {
+        margin: 0;
+    }
+
+    .table th {
+        background: #4361ee;
+        color: white;
+        font-weight: 500;
+        border: none;
+        padding: 1rem;
+    }
+
+    .table td {
+        padding: 1rem;
+        border-color: #e1e4e8;
+    }
+
+    .table-hover tbody tr:hover {
+        background: #f8f9fa;
+        cursor: pointer;
+    }
+
+    /* Status Indicators */
+    .status-badge {
+        padding: 0.375rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+
+    .status-low {
+        background: #fff3e0;
+        color: #ef6c00;
+    }
+
+    .status-out {
+        background: #ffebee;
+        color: #c62828;
+    }
+
+    .status-good {
+        background: #e8f5e9;
+        color: #2e7d32;
+    }
+
+    /* Charts */
+    .chart-container {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        padding: 1.5rem;
+        margin: 1rem 0;
+    }
+
+    /* Enhanced Card Styles */
+    .dashboard-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .dashboard-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    }
+
+    /* Enhanced Table Styles */
+    .table-modern {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        margin: 1rem 0;
+    }
+
+    .table-modern th {
+        background: linear-gradient(45deg, #4361ee, #3a53d0);
+        color: white;
+        font-weight: 600;
+        padding: 1rem 1.5rem;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
+    }
+
+    .table-modern td {
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid #e1e4e8;
+        vertical-align: middle;
+    }
+
+    .table-modern tbody tr {
+        transition: all 0.2s ease;
+    }
+
+    .table-modern tbody tr:hover {
+        background: #f8f9fa;
+        transform: scale(1.01);
+    }
+
+    /* Category Tags */
+    .category-tag {
+        padding: 0.4rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .category-beverage {
+        background: #e3f2fd;
+        color: #1976d2;
+    }
+
+    .category-snack {
+        background: #f3e5f5;
+        color: #7b1fa2;
+    }
+
+    .category-alcohol {
+        background: #fce4ec;
+        color: #c2185b;
+    }
+
+    .category-cigarette {
+        background: #efebe9;
+        color: #4e342e;
+    }
+
+    .category-other {
+        background: #f5f5f5;
+        color: #616161;
+    }
+
+    /* Stock Level Indicators */
+    .stock-indicator {
+        padding: 0.4rem 0.8rem;
+        border-radius: 6px;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .stock-critical {
+        background: #ffebee;
+        color: #c62828;
+    }
+
+    .stock-warning {
+        background: #fff3e0;
+        color: #ef6c00;
+    }
+
+    .stock-good {
+        background: #e8f5e9;
+        color: #2e7d32;
+    }
+
+    /* Enhanced Form Styles */
+    .search-form {
+        display: flex;
+        gap: 1rem;
+        background: white;
+        padding: 1.5rem;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        margin-bottom: 2rem;
+    }
+
+    .form-group {
+        flex: 1;
+    }
+
+    .form-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: #4a5568;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 2px solid #e2e8f0;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+    }
+
+    .form-control:focus {
+        border-color: #4361ee;
+        box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        outline: none;
+    }
+
+    /* Modal Enhancements */
+    .modal-modern {
+        background: white;
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+
+    .modal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #f0f2f5;
+    }
+
+    .modal-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #2d3748;
+    }
+
+    .modal-close {
+        background: none;
+        border: none;
+        color: #a0aec0;
+        font-size: 1.5rem;
+        cursor: pointer;
+        transition: color 0.2s ease;
+    }
+
+    .modal-close:hover {
+        color: #4a5568;
+    }
+
+    /* Action Button Improvements */
+    .btn-icon {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-icon i {
+        font-size: 1.25rem;
+    }
+
+    /* Scrollbar Styling */
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #c5c5c5;
+        border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #a8a8a8;
+    }
+
+    /* Loading States */
+    .loading {
+        position: relative;
+        opacity: 0.7;
+    }
+
+    .loading::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 24px;
+        height: 24px;
+        margin: -12px;
+        border: 2px solid #4361ee;
+        border-top-color: transparent;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+</style>
 
