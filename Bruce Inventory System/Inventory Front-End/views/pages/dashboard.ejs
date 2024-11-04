@@ -20,8 +20,14 @@
             <div>
                 <center>
                     <h2><%= locals.tagline %></h2>
-                    <button onclick="location.href='/filter_products?nfilter=&filter='">Show All</button>
-                    <button id="addProductBtn">Add Product</button>
+                    <div class="action-buttons">
+                        <button onclick="location.href='/filter_products?nfilter=&filter='" class="btn-primary">
+                            <i class='bx bx-show'></i> Show All
+                        </button>
+                        <button id="addProductBtn" class="btn-success">
+                            <i class='bx bx-plus-circle'></i> Add Product
+                        </button>
+                    </div>
                     <form method="GET" action="/filter_products">
                         <label for="nfilter">Filter by Product Name:</label>
                         <input type="text" id="nfilter" name="nfilter" placeholder="Enter Product Name" value="<%= nfilter %>" />
@@ -38,32 +44,66 @@
                     </form>
 
 
-                    <table class="table table-hover scrolldown">
-                        <thead>
-                            <tr>
-                                <th>Product</th>
-                                <th>Price</th>
-                                <th>Category</th>
-                                <th>Onhand</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% if (locals.product && locals.product.length) { %>
-                                <% locals.product.forEach(function(products) { %>
-                                    <tr style="font-weight:normal" 
-                                        onclick="openUpdateModal('<%= products.s_name %>', <%= products.s_price %>, <%= products.instock %>, '<%= products.s_category %>', <%= products.s_id %>)">
-                                        <td><%= products.s_name %></td>
-                                        <td>$<%= products.s_price %></td>
-                                        <td><%= products.s_category %></td>
-                                        <td><%= products.instock %></td>
-
+                    <div class="dashboard-card">
+                        <table class="table-modern">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Category</th>
+                                    <th>Stock</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% if (locals.product && locals.product.length) { %>
+                                    <% locals.product.forEach(function(products) { %>
+                                        <tr>
+                                            <td><%= products.s_name %></td>
+                                            <td>
+                                                <strong>$<%= products.s_price.toFixed(2) %></strong>
+                                            </td>
+                                            <td>
+                                                <span class="category-tag category-<%= products.s_category.toLowerCase() %>">
+                                                    <i class='bx bx-package'></i>
+                                                    <%= products.s_category %>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <% if (products.instock === 0) { %>
+                                                    <span class="stock-indicator stock-critical">
+                                                        <i class='bx bx-x-circle'></i>
+                                                        Out of Stock
+                                                    </span>
+                                                <% } else if (products.instock < 10) { %>
+                                                    <span class="stock-indicator stock-warning">
+                                                        <i class='bx bx-error'></i>
+                                                        Low Stock (<%= products.instock %>)
+                                                    </span>
+                                                <% } else { %>
+                                                    <span class="stock-indicator stock-good">
+                                                        <i class='bx bx-check-circle'></i>
+                                                        <%= products.instock %> units
+                                                    </span>
+                                                <% } %>
+                                            </td>
+                                            <td>
+                                                <button class="btn-icon btn-primary" 
+                                                    onclick="openUpdateModal('<%= products.s_name %>', <%= products.s_price %>, <%= products.instock %>, '<%= products.s_category %>', <%= products.s_id %>)">
+                                                    <i class='bx bx-edit'></i>
+                                                    Edit
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    <% }); %>
+                                <% } else { %>
+                                    <tr>
+                                        <td colspan="5" class="text-center">No products found</td>
                                     </tr>
-                                <% }); %>
-                            <% } else { %>
-                                <tr><td colspan="3">No products found.</td></tr>
-                            <% } %>
-                        </tbody>
-                    </table>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
                 </center>
             </div>
         </main>
