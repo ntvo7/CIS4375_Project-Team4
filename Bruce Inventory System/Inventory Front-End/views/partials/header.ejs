@@ -1,40 +1,41 @@
-
 <style>
-  main { padding-top:50px; }
-  
-  .sidebar {
-    margin: 0;
-    padding: 0;
-    width: 200px;
-    background-color: #f1f1f1;
-    position: fixed;
-    height: 100%;
-    overflow: auto;
-  }
-  
-  /* Sidebar links */
-  .sidebar a {
-    display: block;
-    color: black;
-    padding: 16px;
-    text-decoration: none;
-  }
-  
-  /* Active/current link */
-  .sidebar a.active {
-    background-color: #04AA6D;
-    color: white;
-  }
-  
-  /* Links on mouse-over */
-  .sidebar a:hover:not(.active) {
-    background-color: #555;
-    color: white;
-  }
-  
-  /* Page content. The value of the margin-left property should match the value of the sidebar's width property */
-  div.content {
-    margin-left: 200px;
-    padding: 1px 16px;
-  }
-  </style>
+    .sidebar {
+        margin: 0;
+        padding: 1rem 0;
+        width: 240px;
+        background-color: white;
+        position: fixed;
+        height: 100%;
+        box-shadow: 2px 0 4px rgba(0,0,0,0.05);
+    }
+
+    .sidebar a {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: #1a1a1a;
+        padding: 1rem 1.5rem;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-weight: 500;
+    }
+
+    .sidebar a i {
+        font-size: 1.25rem;
+    }
+
+    .sidebar a.active {
+        background-color: #4361ee;
+        color: white;
+    }
+
+    .sidebar a:hover:not(.active) {
+        background-color: #f0f2f5;
+        color: #4361ee;
+    }
+
+    div.content {
+        margin-left: 240px;
+        padding: 2rem;
+    }
+</style>
