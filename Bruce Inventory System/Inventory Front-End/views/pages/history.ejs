@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../partials/dash'); %>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Include Chart.js -->
+</head>
+
+<body>
+    <%- include('../partials/header'); %>
+    <div class="sidebar">
+        <a href="/main">Home</a>
+        <a href="/filter_products">Dashboard</a>
+        <a href="/reports">Reports</a>
+        <a class="active" href="/filter_stockchange">History</a>
+        <a href="/logout">Log off</a>
+    </div>
+
+    <div class="content">
+        <main>
+            <div>
+                <center>
+                    <h2><%= locals.tagline %></h2>
+                    <button onclick="location.href='/filter_stockchange?nfilter=&startDate=&endDate='">Show All</button><br><br>
+                    <form method="GET" action="/filter_stockchange">
+                        <label for="nfilter">Filter by Product:</label>
+                        <select id="nfilter" name="nfilter">
+                            <option value="">Select Product</option>
+                            <% if (uniqueProducts) { %>
+                                <% uniqueProducts.forEach(function(product) { %>
+                                    <option value="<%= product.id %>" <%= nfilter === product.id.toString() ? 'selected' : '' %>><%= product.name %></option>
+                                <% }); %>
+                            <% } %>
+                        </select>                      
+                        <label for="startDate">Start Date:</label>
+                        <input type="date" id="startDate" name="startDate" value="<%= startDate %>" />
+                        <label for="endDate">End Date:</label>
+                        <input type="date" id="endDate" name="endDate" value="<%= endDate %>" />
+                        <input type="submit" value="Show Trend" />
+                    </form>
+                    
+
+                    <table class="table table-hover scrolldown">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Product</th>
+                                <th>Product ID</th>
+                                <th>Stock</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (locals.stockchange && locals.stockchange.length) { %>
+                                <% locals.stockchange.forEach(function(stockchanges) { %>
+                                    <tr style="font-weight:normal">
+                                        <td><%= formatDate(stockchanges.up_date) %></td>
+                                        <td><%= stockchanges.s_name %></td>
+                                        <td><%= stockchanges.s_id %></td>
+                                        <td><%= stockchanges.newstock %></td>
+                                    </tr>
+                                <% }); %>
+                            <% } else { %>
+                                <tr><td colspan="4">No products found.</td></tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+
+                    <!-- Canvas for Line Chart -->
+                    <div class="chart-container" style="width: 80%; height: 400px;">
+                        <canvas id="stockChangeChart"></canvas>
+                    </div>
+                    
+                    <script>
+                        // Prepare stock changes data for the last month
+                        const stockChangeData = <%- JSON.stringify(locals.stockchange.map(item => item.newstock)) %>;
+                        const stockChangeLabels = <%- JSON.stringify(locals.stockchange.map(item => formatDate(item.up_date))) %>;
+
+                        const productId = "<%= nfilter %>";
+
+                        // Only display chart if product ID is selected and there are stock changes
+                        if (productId && stockChangeData.length > 0) {
+                            const ctx = document.getElementById('stockChangeChart').getContext('2d');
+
+                            const stockChangeChart = new Chart(ctx, {
+                                type: 'line',
+                                data: {
+                                    labels: stockChangeLabels,
+                                    datasets: [{
+                                        label: 'Stock Changes for Product ID: ' + productId, // Show filtered product ID
+                                        data: stockChangeData,
+                                        borderColor: 'rgba(75, 192, 192, 1)',
+                                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                        borderWidth: 2,
+                                        fill: true // Optional: fill the area under the line
+                                    }]
+                                },
+                                options: {
+                                    responsive: true,
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true,
+                                            title: {
+                                                display: true,
+                                                text: 'Stock Quantity'
+                                            }
+                                        }
+                                    }
+                                }
+                            });
+                        } else {
+                            // Handle case where the chart should not be displayed
+                            console.warn("Please select a Product ID to display the chart.");
+                        }
+                    </script>
+
+                </center>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
+
+<% 
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    
+    // Normalize to UTC by setting the time to midnight
+    date.setUTCHours(0, 0, 0, 0);
+    
+    const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const day = String(date.getUTCDate()).padStart(2, '0');
+    const year = date.getUTCFullYear();
+    
+    return `${month}/${day}/${year}`;
+}
+%>

@@ -1,5 +1,5 @@
 #Bruce Store Inventory Back-End Group 4
-#initial 
+
 import flask
 from flask import jsonify
 from flask import request, make_response
@@ -13,7 +13,6 @@ from datetime import datetime
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 
-###################################################################################################################
 #connect to database (based on classwork)
 def create_con(hostname,uname,passwd,dname):
     connection = None
@@ -52,7 +51,6 @@ def execute_read_myquery(connection, query):
 
 con = create_con('127.0.0.1','root','!r00tpwd',"brucestore")
 
-##################################login function, authentication###################################################
 masterUsername = 'admin'
 masterPassword = '5393a423c38ab58e5bddd35c160deabcdd11f7242fa37250dfa49c9e7313cda4' #hash SHA256 value of 'brucestore' as the password
 
@@ -66,8 +64,6 @@ def processrequest():
             return '<h1> Authenticated User'
     return make_response('could not find user', 401, {'WWW-authenticate: ': 'Basic realm="login required"'})
 
-
-############################CRUD OPS Back End#################################################
 #API POST fuction to add products into database
 @app.route('/api/stock', methods=['POST'])
 def add_product():
@@ -79,11 +75,6 @@ def add_product():
     
     sql = "insert into stock (s_name, s_price, instock, s_category) values ('%s', '%s','%s', '%s')" % (newsname, newsprice, newsoh, newscat)
     execute_myquery(con, sql)
-
-    sql_sid = "SELECT * FROM `stock` WHERE s_id=(SELECT MAX(s_id) FROM `stock`);"
-    latest_id = execute_read_myquery(con, sql_sid)
-    sql2 = "insert into stock_change (s_name, s_id, newstock, up_date) values ('%s', '%s','%s', '%s')" % (newsname, latest_id[0]["s_id"], newsoh, datetime.today().strftime('%Y-%m-%d'))
-    execute_myquery(con, sql2)
     
     return "Add request successful"
 
@@ -137,6 +128,32 @@ def api_put_product_byname():
 
 
     return "Put active request successful!"
+
+#API GET to retrieve all stock change history
+@app.route('/api/stock_change', methods=['GET'])
+def all_stock_change():
+    #creating dictionary list of all stock change history
+    sql = "select * from stock_change"
+    all = execute_read_myquery(con, sql)
+    stockchanges = []
+    for eachrow in all:
+        if eachrow not in stockchanges:
+            stockchanges.append(eachrow)
+
+    return jsonify(stockchanges)
+
+#API GET to retrieve all price change history
+@app.route('/api/price_change', methods=['GET'])
+def all_price_change():
+    #creating dictionary list of all price change history
+    sql = "select * from price_change"
+    all = execute_read_myquery(con, sql)
+    pricechange = []
+    for eachrow in all:
+        if eachrow not in pricechange:
+            pricechange.append(eachrow)
+
+    return jsonify(pricechange)
 
 
 app.run()
