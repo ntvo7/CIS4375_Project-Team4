@@ -3,16 +3,66 @@
 
 <head>
     <%- include('../partials/dash'); %>
+    <style>
+        .sidebar {
+            width: 220px;
+            height: 100vh;
+            background: linear-gradient(135deg, #74ebd5, #acb6e5);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            font-family: 'Arial', sans-serif;
+            font-weight: bold;
+        }
+    
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            color: #fff;
+            padding: 12px 15px;
+            margin-bottom: 12px;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background 0.3s, transform 0.2s;
+            font-size: 16px;
+        }
+    
+        .sidebar a i {
+            margin-right: 10px;
+        }
+    
+        .sidebar a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+    
+        .sidebar a.active {
+            background: #28a745;
+            color: #fff;
+            box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
+        }
+    
+        .sidebar-title {
+            margin-bottom: 20px;
+            color: #fff;
+            font-size: 24px;
+            text-align: center;
+        }
+    </style>
 </head>
 
 <body>
     <%- include('../partials/header'); %>
     <div class="sidebar">
-        <a href="/main">Home</a>
-        <a href="/filter_products">Dashboard</a>
-        <a class="active" href="/reports">Reports</a>
-        <a href="/filter_stockchange">History</a>
-        <a href="/logout">Log off</a>
+        <div class="sidebar-title">Navigation</div>
+        <a class="active" href="/main"><i class="fas fa-home"></i> Home</a>
+        <a href="/filter_products"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+        <a href="/reports"><i class="fas fa-chart-bar"></i> Reports</a>
+        <a href="/filter_stockchange"><i class="fas fa-history"></i> History</a>
+        <a href="/logout"><i class="fas fa-sign-out-alt"></i> Log off</a>
     </div>
 
     <div class="content">
@@ -93,5 +143,6 @@
             </div>
         </main>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
 </body>
 </html>
