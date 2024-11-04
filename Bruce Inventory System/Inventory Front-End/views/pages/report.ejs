@@ -19,8 +19,14 @@
         <main>
             <div>
                 <center>
-                    <button onclick="location.href='/printreports?nfilter=&filter='">Open Printable Stock Reports</button><br>
-                    <button onclick="location.href='/reports?nfilter=&filter='">Show All</button>
+                    <div class="action-buttons">
+                        <button onclick="location.href='/printreports?nfilter=&filter='" class="btn-primary">
+                            <i class='bx bx-printer'></i> Print Reports
+                        </button>
+                        <button onclick="location.href='/reports?nfilter=&filter='" class="btn-success">
+                            <i class='bx bx-show-alt'></i> Show All
+                        </button>
+                    </div>
                     <form method="GET" action="/reports">
                         <label for="nfilter">Filter by Product Name:</label>
                         <input type="text" id="nfilter" name="nfilter" placeholder="Enter Product Name" value="<%= nfilter %>" />
