@@ -87,7 +87,7 @@ app.get('/reports', (req, res) => {
     axios.get(`http://127.0.0.1:5000/api/stock`)
     .then((response) => {
         const products = response.data;
-        const tagline = "Low Stock Products (<10)";
+        const tagline = "Low Stock Products";
         const tagline2 = "Out of Stock Products";
 
         // Filter products where on-hand count is less than 10, more than 0
@@ -136,7 +136,7 @@ app.get('/printreports', (req, res) => {
     axios.get(`http://127.0.0.1:5000/api/stock`)
     .then((response) => {
         const products = response.data;
-        const tagline = "Low Stock Products (<10)";
+        const tagline = "Low Stock Products";
         const tagline2 = "Out of Stock Products";
 
         // Filter products where on-hand count is less than 10, more than 0

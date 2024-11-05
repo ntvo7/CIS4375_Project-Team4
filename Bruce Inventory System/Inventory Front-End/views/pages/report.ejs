@@ -1,148 +1,285 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
 <head>
-    <%- include('../partials/dash'); %>
-    <style>
-        .sidebar {
-            width: 220px;
-            height: 100vh;
-            background: linear-gradient(135deg, #74ebd5, #acb6e5);
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            font-family: 'Arial', sans-serif;
-            font-weight: bold;
-        }
-    
-        .sidebar a {
-            display: flex;
-            align-items: center;
-            color: #fff;
-            padding: 12px 15px;
-            margin-bottom: 12px;
-            text-decoration: none;
-            border-radius: 8px;
-            transition: background 0.3s, transform 0.2s;
-            font-size: 16px;
-        }
-    
-        .sidebar a i {
-            margin-right: 10px;
-        }
-    
-        .sidebar a:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-3px);
-        }
-    
-        .sidebar a.active {
-            background: #28a745;
-            color: #fff;
-            box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
-        }
-    
-        .sidebar-title {
-            margin-bottom: 20px;
-            color: #fff;
-            font-size: 24px;
-            text-align: center;
-        }
-    </style>
+   <%- include('../partials/dash'); %>
+   <style>
+       .sidebar {
+           width: 220px;
+           height: 100vh;
+           background: linear-gradient(135deg, #74ebd5, #acb6e5);
+           padding: 20px;
+           border-radius: 15px;
+           box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+           display: flex;
+           flex-direction: column;
+           justify-content: flex-start;
+           font-family: 'Arial', sans-serif;
+           font-weight: bold;
+       }
+  
+       .sidebar a {
+           display: flex;
+           align-items: center;
+           color: #fff;
+           padding: 12px 15px;
+           margin-bottom: 12px;
+           text-decoration: none;
+           border-radius: 8px;
+           transition: background 0.3s, transform 0.2s;
+           font-size: 16px;
+       }
+  
+       .sidebar a i {
+           margin-right: 10px;
+       }
+  
+       .sidebar a:hover {
+           background: rgba(255, 255, 255, 0.2);
+           transform: translateY(-3px);
+       }
+  
+       .sidebar a.active {
+           background: #28a745;
+           color: #fff;
+           box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
+       }
+  
+       .sidebar-title {
+           margin-bottom: 20px;
+           color: #fff;
+           font-size: 24px;
+           text-align: center;
+       }
+
+
+       .action-buttons {
+   display: flex;
+   justify-content: flex-end;
+   gap: 10px;
+   margin-bottom: 20px;
+}
+
+
+.btn-add {
+   background-color: #28a745;
+   color: #fff;
+   border: none;
+   padding: 10px 20px;
+   border-radius: 8px;
+   cursor: pointer;
+   font-size: 16px;
+   transition: background-color 0.3s, transform 0.2s;
+}
+
+
+.btn-add:hover {
+   background-color: #218838;
+   transform: translateY(-2px);
+}
+
+
+.btn-show-all {
+   background-color: #17a2b8;
+   color: #fff;
+   border: none;
+   padding: 10px 20px;
+   border-radius: 8px;
+   cursor: pointer;
+   font-size: 16px;
+   transition: background-color 0.3s, transform 0.2s;
+}
+
+
+.btn-show-all:hover {
+   background-color: #138496;
+   transform: translateY(-2px);
+}
+
+
+
+
+   .filter-section {
+       display: flex;
+       justify-content: space-between;
+       align-items: center;
+       padding: 10px;
+       background-color: #f9f9f9;
+       border-radius: 12px;
+       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+   }
+
+
+   .filter-form {
+       display: flex;
+       align-items: center;
+       gap: 10px;
+   }
+
+
+   .form-control,
+   .form-select {
+       padding: 6px 12px;
+       border-radius: 8px;
+       border: 1px solid #ccc;
+   }
+
+
+   .btn {
+       padding: 6px 12px;
+       border-radius: 8px;
+       transition: background-color 0.3s;
+   }
+
+
+   .btn-info {
+       background-color: #17a2b8;
+       color: white;
+   }
+
+
+   .btn-info:hover {
+       background-color: #138496;
+   }
+
+
+   .btn-success {
+       background-color: #28a745;
+       color: white;
+   }
+
+
+   .btn-success:hover {
+       background-color: #218838;
+   }
+   </style>
 </head>
 
+
 <body>
-    <%- include('../partials/header'); %>
-    <div class="sidebar">
-        <div class="sidebar-title">Navigation</div>
-        <a class="active" href="/main"><i class="fas fa-home"></i> Home</a>
-        <a href="/filter_products"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-        <a href="/reports"><i class="fas fa-chart-bar"></i> Reports</a>
-        <a href="/filter_stockchange"><i class="fas fa-history"></i> History</a>
-        <a href="/logout"><i class="fas fa-sign-out-alt"></i> Log off</a>
-    </div>
+   <%- include('../partials/header'); %>
+   <div class="sidebar">
+       <div class="sidebar-title">Navigation</div>
+       <a href="/main"><i class="fas fa-home"></i> Home</a>
+       <a href="/filter_products"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+       <a class="active" href="/reports"><i class="fas fa-chart-bar"></i> Reports</a>
+       <a href="/filter_stockchange"><i class="fas fa-history"></i> History</a>
+       <a href="/logout"><i class="fas fa-sign-out-alt"></i> Log off</a>
+   </div>
 
-    <div class="content">
-        <main>
-            <div>
-                <center>
-                    <button onclick="location.href='/printreports?nfilter=&filter='">Open Printable Stock Reports</button><br>
-                    <button onclick="location.href='/reports?nfilter=&filter='">Show All</button>
-                    <form method="GET" action="/reports">
-                        <label for="nfilter">Filter by Product Name:</label>
-                        <input type="text" id="nfilter" name="nfilter" placeholder="Enter Product Name" value="<%= nfilter %>" />
-                        <label for="filter">Category:</label>
-                        <select name="filter" id="filter">
-                            <option value="">All</option>
-                            <option value="beverage" <%= filter === 'beverage' ? 'selected' : '' %>>Beverage</option>
-                            <option value="snack" <%= filter === 'snack' ? 'selected' : '' %>>Snack</option>
-                            <option value="alcohol" <%= filter === 'alcohol' ? 'selected' : '' %>>Alcohol</option>
-                            <option value="cigarette" <%= filter === 'cigarette' ? 'selected' : '' %>>Cigarette</option>
-                            <option value="other" <%= filter === 'other' ? 'selected' : '' %>>Other</option>
-                        </select>
-                        <input type="submit" value="Filter" />
-                    </form>
 
-                    <h2><%= locals.tagline %></h2>
-                    <table class="table table-hover scrolldown">
-                        <thead>
-                            <tr>
-                                <th>Product</th>
-                                <th>Price</th>
-                                <th>Category</th>
-                                <th>Onhand</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% if (locals.lowproduct && locals.lowproduct.length) { %>
-                                <% locals.lowproduct.forEach(function(lowproducts) { %>
-                                    <tr style="font-weight:normal">
-                                        <td><%= lowproducts.s_name %></td>
-                                        <td>$<%= lowproducts.s_price %></td>
-                                        <td><%= lowproducts.s_category %></td>
-                                        <td><%= lowproducts.instock %></td>
+   <div class="content">
+       <main>
+           <div>
+               <center>
+                   <h2>Report</h2>
+                   <!-- <button onclick="location.href='/printreports?nfilter=&filter='">Open Printable Stock Reports</button><br>
+                   <button onclick="location.href='/reports?nfilter=&filter='">Show All</button> -->
+                   <div class="action-buttons">
+                       <button class="btn-show-all" onclick="location.href='/reports?nfilter=&filter='">
+                           Show All
+                       </button>
+                       <button class="btn-add" onclick="location.href='/printreports?nfilter=&filter='">
+                           Print Report
+                       </button>
+                      
+                   </div>
+                  
+                   <!-- <form method="GET" action="/reports">
+                       <label for="nfilter">Filter by Product Name:</label>
+                       <input type="text" id="nfilter" name="nfilter" placeholder="Enter Product Name" value="<%= nfilter %>" />
+                       <label for="filter">Category:</label>
+                       <select name="filter" id="filter">
+                           <option value="">All</option>
+                           <option value="beverage" <%= filter === 'beverage' ? 'selected' : '' %>>Beverage</option>
+                           <option value="snack" <%= filter === 'snack' ? 'selected' : '' %>>Snack</option>
+                           <option value="alcohol" <%= filter === 'alcohol' ? 'selected' : '' %>>Alcohol</option>
+                           <option value="cigarette" <%= filter === 'cigarette' ? 'selected' : '' %>>Cigarette</option>
+                           <option value="other" <%= filter === 'other' ? 'selected' : '' %>>Other</option>
+                       </select>
+                       <input type="submit" value="Filter" />
+                   </form> -->
 
-                                    </tr>
-                                <% }); %>
-                            <% } else { %>
-                                <tr><td colspan="3">No products found.</td></tr>
-                            <% } %>
-                        </tbody>
-                    </table><br>
 
-                    <h2><%= locals.tagline2 %></h2>
-                    <table class="table table-hover scrolldown">
-                        <thead>
-                            <tr>
-                                <th>Product</th>
-                                <th>Price</th>
-                                <th>Category</th>
-                                <th>Onhand</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% if (locals.outproduct && locals.outproduct.length) { %>
-                                <% locals.outproduct.forEach(function(outproducts) { %>
-                                    <tr style="font-weight:normal">
-                                        <td><%= outproducts.s_name %></td>
-                                        <td>$<%= outproducts.s_price %></td>
-                                        <td><%= outproducts.s_category %></td>
-                                        <td><%= outproducts.instock %></td>
+                   <div class="filter-section d-flex justify-content-between align-items-center mb-4">
+                       <form class="filter-form d-flex align-items-center" method="GET" action="/reports">
+                           <label for="nfilter" class="form-label font-weight-bold">Filter by Product Name:</label>
+                           <input type="text" id="nfilter" name="nfilter" placeholder="Enter Product Name" value="<%= nfilter %>" class="form-control mx-2" />
+                           <label for="filter" class="form-label font-weight-bold">Category:</label>
+                           <select name="filter" id="filter" class="form-select mx-2">
+                               <option value="">All</option>
+                               <option value="beverage" <%= filter === 'beverage' ? 'selected' : '' %>>Beverage</option>
+                               <option value="snack" <%= filter === 'snack' ? 'selected' : '' %>>Snack</option>
+                               <option value="alcohol" <%= filter === 'alcohol' ? 'selected' : '' %>>Alcohol</option>
+                               <option value="cigarette" <%= filter === 'cigarette' ? 'selected' : '' %>>Cigarette</option>
+                               <option value="other" <%= filter === 'other' ? 'selected' : '' %>>Other</option>
+                           </select>
+                           <input type="submit" value="Filter" class="btn btn-primary mx-2" />
+                       </form>
+                   </div>
 
-                                    </tr>
-                                <% }); %>
-                            <% } else { %>
-                                <tr><td colspan="3">No products found.</td></tr>
-                            <% } %>
-                        </tbody>
-                    </table>
-                </center>
-            </div>
-        </main>
-    </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+
+                   <h3><%= locals.tagline %></h3>
+                   <table class="table table-hover scrolldown">
+                       <thead>
+                           <tr>
+                               <th>Product</th>
+                               <th>Price</th>
+                               <th>Category</th>
+                               <th>Onhand</th>
+                           </tr>
+                       </thead>
+                       <tbody>
+                           <% if (locals.lowproduct && locals.lowproduct.length) { %>
+                               <% locals.lowproduct.forEach(function(lowproducts) { %>
+                                   <tr style="font-weight:normal">
+                                       <td><%= lowproducts.s_name %></td>
+                                       <td>$<%= lowproducts.s_price %></td>
+                                       <td><%= lowproducts.s_category %></td>
+                                       <td><%= lowproducts.instock %></td>
+
+
+                                   </tr>
+                               <% }); %>
+                           <% } else { %>
+                               <tr><td colspan="3">No products found.</td></tr>
+                           <% } %>
+                       </tbody>
+                   </table><br>
+
+
+                   <h2><%= locals.tagline2 %></h2>
+                   <table class="table table-hover scrolldown">
+                       <thead>
+                           <tr>
+                               <th>Product</th>
+                               <th>Price</th>
+                               <th>Category</th>
+                               <th>Onhand</th>
+                           </tr>
+                       </thead>
+                       <tbody>
+                           <% if (locals.outproduct && locals.outproduct.length) { %>
+                               <% locals.outproduct.forEach(function(outproducts) { %>
+                                   <tr style="font-weight:normal">
+                                       <td><%= outproducts.s_name %></td>
+                                       <td>$<%= outproducts.s_price %></td>
+                                       <td><%= outproducts.s_category %></td>
+                                       <td><%= outproducts.instock %></td>
+
+
+                                   </tr>
+                               <% }); %>
+                           <% } else { %>
+                               <tr><td colspan="3">No products found.</td></tr>
+                           <% } %>
+                       </tbody>
+                   </table>
+               </center>
+           </div>
+       </main>
+   </div>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
 </body>
 </html>
