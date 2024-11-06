@@ -55,7 +55,7 @@ app.post('/process_login', function(req, res){
     axios.get(`http://127.0.0.1:5000/api/stock`)
     .then((response) => {
         const products = response.data;
-        const tagline = "Low Stock Products";
+        const tagline = "Low Stock Chart";
 
         // Filter products where on-hand count is less than 10
         const filteredProducts = products.filter(product => product.instock < 10);
@@ -87,7 +87,7 @@ app.get('/reports', (req, res) => {
     axios.get(`http://127.0.0.1:5000/api/stock`)
     .then((response) => {
         const products = response.data;
-        const tagline = "Low Stock Products (<10)";
+        const tagline = "Low Stock Products";
         const tagline2 = "Out of Stock Products";
 
         // Filter products where on-hand count is less than 10, more than 0
@@ -219,29 +219,84 @@ app.get('/filter_stockchange', (req, res) => {
     });
 });
 
-app.post('/add_product', function(req, res){
-    // create a variable to hold the product name from the request body
-    var proname= req.body.proname;
-    // create a variable to hold the product price from the request body
-    var proprice = req.body.proprice;
-    // create a variable to hold the product on hand from the request body
-    var prooh = req.body.prooh;
-    // create a variable to hold the product on hand from the request body
-    var procat = req.body.cats;
+// app.post('/add_product', function(req, res){
+//     // create a variable to hold the product name from the request body
+//     var proname= req.body.proname;
+//     // create a variable to hold the product price from the request body
+//     var proprice = req.body.proprice;
+//     // create a variable to hold the product on hand from the request body
+//     var prooh = req.body.prooh;
+//     // create a variable to hold the product on hand from the request body
+//     var procat = req.body.cats;
 
-        // Capture the filter values from the request body
-    const currentNameFilter = req.body.nfilter || ''; // Current name filter
-    const currentCategoryFilter = req.body.filter || ''; // Current category filter
+//         // Capture the filter values from the request body
+//     const currentNameFilter = req.body.nfilter || ''; // Current name filter
+//     const currentCategoryFilter = req.body.filter || ''; // Current category filter
     
-    axios.post('http://127.0.0.1:5000/api/stock', {s_name:proname, s_price:proprice, instock:prooh, s_category:procat})
-   console.log("Name is: " + proname);
-   console.log("Price is: " + proprice);
-   console.log("OnHand is: " + prooh);
-   console.log("Category is:" + procat);
+//     axios.post('http://127.0.0.1:5000/api/stock', {s_name:proname, s_price:proprice, instock:prooh, s_category:procat})
+//    console.log("Name is: " + proname);
+//    console.log("Price is: " + proprice);
+//    console.log("OnHand is: " + prooh);
+//    console.log("Category is:" + procat);
 
-   res.redirect(`/filter_products?nfilter=${encodeURIComponent(currentNameFilter)}&filter=${encodeURIComponent(currentCategoryFilter)}`);
+//    res.redirect(`/filter_products?nfilter=${encodeURIComponent(currentNameFilter)}&filter=${encodeURIComponent(currentCategoryFilter)}`);
   
-  });
+//   });
+
+app.post('/add_product', function(req, res) {
+    // Extract product details from the request body
+    const proname = req.body.proname;
+    const proprice = parseFloat(req.body.proprice); // Ensure the price is a number
+    const prooh = parseInt(req.body.prooh, 10); // Ensure the on-hand count is an integer
+    const procat = req.body.cats;
+ 
+ 
+    // Capture filter values from the request body
+    const currentNameFilter = req.body.nfilter || '';
+    const currentCategoryFilter = req.body.filter || '';
+ 
+ 
+    // Validate input data to prevent issues
+    if (!proname || isNaN(proprice) || isNaN(prooh) || !procat) {
+        console.error("Invalid input data for adding product.");
+        return res.status(400).send("Invalid input data for adding product.");
+    }
+ 
+ 
+    // Make the API call to add the product with a timeout configuration
+    axios.post('http://127.0.0.1:5000/api/stock', {
+        s_name: proname,
+        s_price: proprice,
+        instock: prooh,
+        s_category: procat
+    }, { timeout: 5000 }) // Added timeout configuration
+    .then((response) => {
+        console.log("Product added successfully:", {
+            name: proname,
+            price: proprice,
+            onhand: prooh,
+            category: procat
+        });
+ 
+ 
+        // Redirect to the filtered product list
+        res.redirect(`/filter_products?nfilter=${encodeURIComponent(currentNameFilter)}&filter=${encodeURIComponent(currentCategoryFilter)}`);
+    })
+    .catch((error) => {
+        if (error.response) {
+            // The request was made, but the server responded with a status code not in the 2xx range
+            console.error("Error adding product - Server response:", error.response.data);
+        } else if (error.request) {
+            // The request was made but no response was received
+            console.error("Error adding product - No response received:", error.request);
+        } else {
+            // Something else happened during the request setup
+            console.error("Error adding product:", error.message);
+        }
+        res.status(500).send("Error adding product");
+    });
+ });
+ 
 
   app.post('/update_product/:s_id', function(req, res) {
     const sid = req.params.s_id;
