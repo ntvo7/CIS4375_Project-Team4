@@ -184,5 +184,16 @@ text-align: right;
     background-color: #ac2925; /* Even darker red when pressed */
 }
 
+@media print {
+    table.scrolldown tbody {
+        /* Set the height of table body */
+        height: auto;
 
+        /* Set vertical scroll */
+        overflow-y: hidden;
+
+        /* Hide the horizontal scroll */
+        overflow-x: hidden;
+        }
+  }
 </style>

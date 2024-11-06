@@ -5,6 +5,7 @@
     <%- include('../partials/dash'); %>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Include Chart.js -->
     <style>
+        /* side bar portion */
         .sidebar {
             width: 220px;
             height: 100vh;
@@ -18,7 +19,8 @@
             font-family: 'Arial', sans-serif;
             font-weight: bold;
         }
-    
+ 
+ 
         .sidebar a {
             display: flex;
             align-items: center;
@@ -30,127 +32,143 @@
             transition: background 0.3s, transform 0.2s;
             font-size: 16px;
         }
-    
+ 
+ 
         .sidebar a i {
             margin-right: 10px;
         }
-    
+ 
+ 
         .sidebar a:hover {
             background: rgba(255, 255, 255, 0.2);
             transform: translateY(-3px);
         }
-    
+ 
+ 
         .sidebar a.active {
             background: #28a745;
             color: #fff;
             box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
         }
-    
+ 
+ 
         .sidebar-title {
             margin-bottom: 20px;
-            color: #fff;
+            color: #000000;
             font-size: 24px;
             text-align: center;
         }
-
+ 
+ 
+        /* button portion */
         .action-buttons {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.btn {
-    display: inline-block;
-    padding: 10px 20px;
-    color: #000000;
-    font-weight: bold;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
-}
-
-/* Show All Button Styling */
-.btn-show-all {
-    background: linear-gradient(90deg, #3498db, #6dd5fa);
-    box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
-}
-
-.btn-show-all:hover {
-    background: linear-gradient(90deg, #2980b9, #57c5e5);
-    transform: translateY(-3px);
-    box-shadow: 0 6px 15px rgba(41, 128, 185, 0.4);
-}
-
-/* Show Trend Button Styling */
-.btn-show-trend {
-    background: linear-gradient(90deg, #28a745, #5fdc82);
-    box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
-}
-
-.btn-show-trend:hover {
-    background: linear-gradient(90deg, #218838, #4ecb70);
-    transform: translateY(-3px);
-    box-shadow: 0 6px 15px rgba(33, 136, 56, 0.4);
-}
-
-.filter-section {
-    display: flex;
-    justify-content: center;
-    padding: 15px;
-    background-color: #f9f9f9;
-    border-radius: 12px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-}
-
-.filter-form {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.form-label {
-    font-weight: bold;
-    color: #333;
-}
-
-.form-control,
-.form-select {
-    padding: 8px 12px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    width: 160px;
-    transition: border-color 0.3s;
-}
-
-.form-control:focus,
-.form-select:focus {
-    outline: none;
-    border-color: #17a2b8;
-}
-
-.btn-filter {
-    background: linear-gradient(90deg, #28a745, #5fdc82);
-    color: #000000;
-    padding: 8px 20px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
-}
-
-.btn-filter:hover {
-    background: linear-gradient(90deg, #218838, #4ecb70);
-    transform: translateY(-3px);
-    box-shadow: 0 6px 15px rgba(33, 136, 56, 0.4);
-}
-
-
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+ 
+ 
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            color: #000000;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+        }
+ 
+ 
+        .btn-show-all {
+            background: linear-gradient(90deg, #3498db, #6dd5fa);
+            box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+        }
+ 
+ 
+        .btn-show-all:hover {
+            background: linear-gradient(90deg, #2980b9, #57c5e5);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(41, 128, 185, 0.4);
+        }
+ 
+ 
+        .btn-show-trend {
+            background: linear-gradient(90deg, #28a745, #5fdc82);
+            box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
+        }
+ 
+ 
+        .btn-show-trend:hover {
+            background: linear-gradient(90deg, #218838, #4ecb70);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(33, 136, 56, 0.4);
+        }
+ 
+ 
+        /* filter portion */
+        .filter-section {
+            display: flex;
+            justify-content: center;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+ 
+ 
+        .filter-form {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+ 
+ 
+        .form-label {
+            font-weight: bold;
+            color: #333;
+        }
+ 
+ 
+        .form-control,
+        .form-select {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            width: 160px;
+            transition: border-color 0.3s;
+        }
+ 
+ 
+        .form-control:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: #17a2b8;
+        }
+ 
+ 
+        .btn-filter {
+            background: linear-gradient(90deg, #28a745, #5fdc82);
+            color: #000000;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+        }
+ 
+ 
+        .btn-filter:hover {
+            background: linear-gradient(90deg, #218838, #4ecb70);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(33, 136, 56, 0.4);
+        }
     </style>
+ 
 </head>
 
 <body>
@@ -163,51 +181,46 @@
         <a class="active" href="/filter_stockchange"><i class="fas fa-history"></i> History</a>
         <a href="/logout"><i class="fas fa-sign-out-alt"></i> Log off</a>
     </div>
+ 
+
     <div class="content">
         <main>
+            <center>
+                <h2><%= locals.tagline %></h2>
+            </center>
             <div>
-                <center>
-                    <h2><%= locals.tagline %></h2>
-                    <div class="action-buttons">
-                        <button class="btn btn-show-all" onclick="location.href='/filter_stockchange?nfilter=&startDate=&endDate='">Show All</button>
+                    <div class="container">
+                        <div class="action-buttons">
+                            <button class="btn btn-show-all" onclick="location.href='/filter_stockchange?nfilter=&startDate=&endDate='">Show All</button>
+                        </div>
+         
+         
+                        <div class="filter-section">
+                            <form class="filter-form" id="filterForm" method="GET" action="/filter_stockchange">
+                                <label for="nfilter" class="form-label">Filter by Product:</label>
+                                <select id="nfilter" name="nfilter" class="form-select">
+                                    <option value="">Select Product</option>
+                                    <% if (uniqueProducts) { %>
+                                        <% uniqueProducts.forEach(function(product) { %>
+                                            <option value="<%= product.id %>" <%= nfilter === product.id.toString() ? 'selected' : '' %>><%= product.name %></option>
+                                        <% }); %>
+                                    <% } %>
+                                </select>
+         
+         
+                                <label for="startDate" class="form-label">Start Date:</label>
+                                <input type="date" id="startDate" name="startDate" value="<%= startDate %>" class="form-control" />
+         
+         
+                                <label for="endDate" class="form-label">End Date:</label>
+                                <input type="date" id="endDate" name="endDate" value="<%= endDate %>" class="form-control" />
+         
+         
+                                <button type="submit" class="btn btn-filter">Show Trend</button>
+                            </form>
+                        </div>
                     </div>
-                    <!-- <form id="filterForm" method="GET" action="/filter_stockchange">
-                        <label for="nfilter">Filter by Product:</label>
-                        <select id="nfilter" name="nfilter">
-                            <option value="">Select Product</option>
-                            <% if (uniqueProducts) { %>
-                                <% uniqueProducts.forEach(function(product) { %>
-                                    <option value="<%= product.id %>" <%= nfilter === product.id.toString() ? 'selected' : '' %>><%= product.name %></option>
-                                <% }); %>
-                            <% } %>
-                        </select>                      
-                        <label for="startDate">Start Date:</label>
-                        <input type="date" id="startDate" name="startDate" value="<%= startDate %>" />
-                        <label for="endDate">End Date:</label>
-                        <input type="date" id="endDate" name="endDate" value="<%= endDate %>" />
-                        <input class="btn btn-show-trend" type="submit" value="Show Trend" />
-                    </form> -->
-                    <div class="filter-section">
-                        <form class="filter-form" method="GET" action="/filter_stockchange">
-                            <label for="nfilter" class="form-label">Filter by Product:</label>
-                            <select id="nfilter" name="nfilter" class="form-select">
-                                <option value="">Select Product</option>
-                                <% if (uniqueProducts) { %>
-                                    <% uniqueProducts.forEach(function(product) { %>
-                                        <option value="<%= product.id %>" <%= nfilter === product.id.toString() ? 'selected' : '' %>><%= product.name %></option>
-                                    <% }); %>
-                                <% } %>
-                            </select>
-                            
-                            <label for="startDate" class="form-label">Start Date:</label>
-                            <input type="date" id="startDate" name="startDate" value="<%= startDate %>" class="form-control" />
-                            
-                            <label for="endDate" class="form-label">End Date:</label>
-                            <input type="date" id="endDate" name="endDate" value="<%= endDate %>" class="form-control" />
-                            
-                            <button type="submit" class="btn btn-filter">Show Trend</button>
-                        </form>
-                    </div>
+         
                     
 
                     <table class="table table-hover scrolldown">

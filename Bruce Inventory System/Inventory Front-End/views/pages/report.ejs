@@ -4,6 +4,7 @@
 <head>
     <%- include('../partials/dash'); %>
     <style>
+        /* side bar portion  */
         .sidebar {
             width: 220px;
             height: 100vh;
@@ -17,7 +18,6 @@
             font-family: 'Arial', sans-serif;
             font-weight: bold;
         }
-    
         .sidebar a {
             display: flex;
             align-items: center;
@@ -29,29 +29,26 @@
             transition: background 0.3s, transform 0.2s;
             font-size: 16px;
         }
-    
         .sidebar a i {
             margin-right: 10px;
         }
-    
         .sidebar a:hover {
             background: rgba(255, 255, 255, 0.2);
             transform: translateY(-3px);
         }
-    
         .sidebar a.active {
             background: #28a745;
             color: #fff;
             box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
         }
-    
         .sidebar-title {
             margin-bottom: 20px;
-            color: #fff;
+            color: #000000;
             font-size: 24px;
             text-align: center;
         }
 
+        /* button portion */
         .action-buttons {
             display: flex;
             justify-content: flex-end;
@@ -60,131 +57,109 @@
         }
 
         .btn {
-           display: inline-block;
-           padding: 10px 20px;
-           border: none;
-           border-radius: 8px;
-           color: #000000;
-           font-weight: bold;
-           cursor: pointer;
-           transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
-           text-align: center;
-           text-decoration: none;
-       }
+            display: inline-block;
+            padding: 10px 20px;
+            color: #000000;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+        }
 
         .btn-show-all {
+            background: linear-gradient(90deg, #3498db, #6dd5fa);
+            box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-show-all:hover {
+            background: linear-gradient(90deg, #2980b9, #57c5e5);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(41, 128, 185, 0.4);
+        }
+
+        .btn-print {
+            background: linear-gradient(90deg, #28a745, #5dd95a);
+            box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn-print:hover {
+            background: linear-gradient(90deg, #218838, #47c447);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(33, 136, 56, 0.4);
+        }
+
+        /* filter and form portion */
+        .filter-section {
+            display: flex;
+            justify-content: center;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .filter-form {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .form-label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-control,
+        .form-select {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            width: 160px;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: #17a2b8;
+        }
+
+        .btn-filter {
+            background: linear-gradient(90deg, #28a745, #5fdc82);
+            color: #ffffff;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+        }
+
+        .btn-filter:hover {
+            background: linear-gradient(90deg, #218838, #4ecb70);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(33, 136, 56, 0.4);
+        }
+
+        .filter-button {
+            background: linear-gradient(90deg, #07A3B2, #d9ecc7a5);
+            color: #000000;
+            border: none;
             padding: 10px 20px;
             border-radius: 8px;
             cursor: pointer;
             font-size: 16px;
-            transition: background-color 0.3s, transform 0.2s;
-            color: hsl(0, 0%, 0%);
-            border: none;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
         }
 
-        .btn-show-all {
-           background: linear-gradient(90deg, #3498db, #6dd5fa);
-           background-color: #17a2b8;
-           box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
-       }
-
-       .btn-show-all:hover {
-           background: linear-gradient(90deg, #2980b9, #57c5e5);
-           transform: translateY(-3px);
-           box-shadow: 0 6px 15px rgba(41, 128, 185, 0.4);
-       }
-
-        .btn-show-all:hover {
-            background-color: #138496;
-            transform: translateY(-2px);
-        }
-
-        .btn-print {
-        background: linear-gradient(90deg, #28a745, #5dd95a);
-        box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
-    }
-
-    .btn-print:hover {
-        background: linear-gradient(90deg, #218838, #47c447);
-        transform: translateY(-3px);
-        box-shadow: 0 6px 15px rgba(33, 136, 56, 0.4);
-    }
-
-    .filter-section {
-           display: flex;
-           justify-content: center;
-           background: #f8f9fa;
-           padding: 15px;
-           border-radius: 10px;
-           box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-           margin-bottom: 20px;
-       }
-
-       .filter-form {
-           display: flex;
-           align-items: center;
-           gap: 10px;
-       }
-
-       .filter-section label {
-           font-weight: bold;
-           color: #333;
-       }
-
-       .filter-section input[type="text"],
-       .filter-section select {
-           padding: 8px;
-           border-radius: 5px;
-           border: 1px solid #ccc;
-           transition: border 0.3s, box-shadow 0.3s;
-       }
-
-       .filter-section input[type="text"]:focus,
-       .filter-section select:focus {
-           border-color: #007bff;
-           box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
-           outline: none;
-       }
-
-       .filter-button {
-           background: linear-gradient(90deg, #3498db, #6dd5fa);
-           color: #fff;
-           border: none;
-           padding: 10px 20px;
-           border-radius: 8px;
-           cursor: pointer;
-           font-size: 16px;
-           font-weight: bold;
-           transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
-       }
-
-       .filter-button:hover {
-           background: linear-gradient(90deg, #2980b9, #57c5e5);
-           transform: translateY(-3px);
-           box-shadow: 0 6px 15px rgba(41, 128, 185, 0.4);
-       }
-
-        @media print {
-            .sidebar, .action-buttons, .filter-section, .print-hide {
-                display: none;
-            }
-            body {
-                margin: 0;
-                font-size: 12pt;
-                -webkit-print-color-adjust: exact;
-            }
-            main {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-            }
-            h2, h3 {
-                text-align: center;
-                margin: 10px 0;
-            }
-            table {
-                width: 100%;
-            }
+        .filter-button:hover {
+            background: linear-gradient(90deg, #2980b9, #57c5e5);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(41, 128, 185, 0.4);
         }
     </style>
 </head>
@@ -202,18 +177,19 @@
 
     <div class="content">
         <main>
+            <center><h2>Report</h2></center>
+
             <div class="print-hide">
-                <center><h2>Report</h2></center>
                 <div class="action-buttons">
-                    <button class="btn btn-show-all" onclick="location.href='/reports?nfilter=&filter='">Show All</button>
                     <button class="btn btn-print" onclick="window.print()">Print Report</button>
+                    <button class="btn btn-show-all" onclick="location.href='/reports?nfilter=&filter='">Show All</button>
                 </div>
 
                 <div class="filter-section">
                     <form class="filter-form" method="GET" action="/reports">
-                        <label for="nfilter" class="form-label font-weight-bold">Filter by Product Name:</label>
-                        <input type="text" id="nfilter" name="nfilter" placeholder="Enter Product Name" value="<%= nfilter %>" class="form-control" />
-                        <label for="filter" class="form-label font-weight-bold">Category:</label>
+                        <label for="nfilter" class="form-label">Filter by Product Name:</label>
+                        <input type="text" id="nfilter" name="nfilter" placeholder="Enter Name" value="<%= nfilter %>" class="form-select"/>
+                        <label for="filter" class="form-label">Category:</label>
                         <select name="filter" id="filter" class="form-select">
                             <option value="">All</option>
                             <option value="beverage" <%= filter === 'beverage' ? 'selected' : '' %>>Beverage</option>
@@ -222,7 +198,8 @@
                             <option value="cigarette" <%= filter === 'cigarette' ? 'selected' : '' %>>Cigarette</option>
                             <option value="other" <%= filter === 'other' ? 'selected' : '' %>>Other</option>
                         </select>
-                        <input type="submit" value="Filter" class="btn btn-primary" />
+                        <input type="submit" value="Filter" class="filter-button" />
+
                     </form>
                 </div>
             </div>
@@ -282,4 +259,5 @@
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
 </body>
+
 </html>

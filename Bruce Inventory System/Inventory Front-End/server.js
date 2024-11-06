@@ -55,7 +55,7 @@ app.post('/process_login', function(req, res){
     axios.get(`http://127.0.0.1:5000/api/stock`)
     .then((response) => {
         const products = response.data;
-        const tagline = "Low Stock Products";
+        const tagline = "Low Stock Chart";
 
         // Filter products where on-hand count is less than 10
         const filteredProducts = products.filter(product => product.instock < 10);
@@ -130,55 +130,6 @@ app.get('/reports', (req, res) => {
         res.status(500).send("Error fetching products");
     });
 });
-
-// app.get('/printreports', (req, res) => {
-//     // Fetch all products from the API
-//     axios.get(`http://127.0.0.1:5000/api/stock`)
-//     .then((response) => {
-//         const products = response.data;
-//         const tagline = "Low Stock Products";
-//         const tagline2 = "Out of Stock Products";
-
-//         // Filter products where on-hand count is less than 10, more than 0
-//         const lowProducts = products.filter(product => product.instock > 0 && product.instock <= 10);
-//         const outProducts = products.filter(product => product.instock == 0);
-
-//         // Retrieve filters from query parameters
-//         const nameFilter = req.query.nfilter || ''; // Name filter
-//         const categoryFilter = req.query.filter || ''; // Category filter
-
-//         // Filter products based on the filters
-//         const lowfilteredProducts = lowProducts.filter(lowproduct => {
-//             const nameMatches = !nameFilter || lowproduct.s_name.toLowerCase().includes(nameFilter.toLowerCase());
-//             const categoryMatches = !categoryFilter || (lowproduct.s_category && lowproduct.s_category.toLowerCase() === categoryFilter.toLowerCase());
-//             return nameMatches && categoryMatches;
-//         });
-
-//         // Filter products based on the filters
-//         const outfilteredProducts = outProducts.filter(outproduct => {
-//             const nameMatches = !nameFilter || outproduct.s_name.toLowerCase().includes(nameFilter.toLowerCase());
-//             const categoryMatches = !categoryFilter || (outproduct.s_category && outproduct.s_category.toLowerCase() === categoryFilter.toLowerCase());
-//             return nameMatches && categoryMatches;
-//         });
-
-//         console.log(lowfilteredProducts);
-//         console.log(outfilteredProducts);
-
-//         // Render the page with filtered products for the reports
-//         res.render('pages/print_report', { 
-//             lowproduct: lowfilteredProducts,
-//             outproduct: outfilteredProducts,
-//             tagline: tagline,
-//             tagline2: tagline2,
-//             nfilter: nameFilter,
-//             filter: categoryFilter
-//         });
-//     })
-//     .catch((error) => {
-//         console.error("Error fetching products:", error);
-//         res.status(500).send("Error fetching products");
-//     });
-// });
 
 app.get('/filter_products', (req, res) => {
     axios.get(`http://127.0.0.1:5000/api/stock`)
