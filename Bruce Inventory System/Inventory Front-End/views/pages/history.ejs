@@ -52,6 +52,104 @@
             font-size: 24px;
             text-align: center;
         }
+
+        .action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    color: #000000;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+}
+
+/* Show All Button Styling */
+.btn-show-all {
+    background: linear-gradient(90deg, #3498db, #6dd5fa);
+    box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+}
+
+.btn-show-all:hover {
+    background: linear-gradient(90deg, #2980b9, #57c5e5);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(41, 128, 185, 0.4);
+}
+
+/* Show Trend Button Styling */
+.btn-show-trend {
+    background: linear-gradient(90deg, #28a745, #5fdc82);
+    box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
+}
+
+.btn-show-trend:hover {
+    background: linear-gradient(90deg, #218838, #4ecb70);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(33, 136, 56, 0.4);
+}
+
+.filter-section {
+    display: flex;
+    justify-content: center;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.filter-form {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.form-label {
+    font-weight: bold;
+    color: #333;
+}
+
+.form-control,
+.form-select {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    width: 160px;
+    transition: border-color 0.3s;
+}
+
+.form-control:focus,
+.form-select:focus {
+    outline: none;
+    border-color: #17a2b8;
+}
+
+.btn-filter {
+    background: linear-gradient(90deg, #28a745, #5fdc82);
+    color: #000000;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+}
+
+.btn-filter:hover {
+    background: linear-gradient(90deg, #218838, #4ecb70);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(33, 136, 56, 0.4);
+}
+
+
     </style>
 </head>
 
@@ -65,15 +163,15 @@
         <a class="active" href="/filter_stockchange"><i class="fas fa-history"></i> History</a>
         <a href="/logout"><i class="fas fa-sign-out-alt"></i> Log off</a>
     </div>
-
-
     <div class="content">
         <main>
             <div>
                 <center>
                     <h2><%= locals.tagline %></h2>
-                    <button onclick="location.href='/filter_stockchange?nfilter=&startDate=&endDate='">Show All</button><br><br>
-                    <form method="GET" action="/filter_stockchange">
+                    <div class="action-buttons">
+                        <button class="btn btn-show-all" onclick="location.href='/filter_stockchange?nfilter=&startDate=&endDate='">Show All</button>
+                    </div>
+                    <!-- <form id="filterForm" method="GET" action="/filter_stockchange">
                         <label for="nfilter">Filter by Product:</label>
                         <select id="nfilter" name="nfilter">
                             <option value="">Select Product</option>
@@ -87,8 +185,29 @@
                         <input type="date" id="startDate" name="startDate" value="<%= startDate %>" />
                         <label for="endDate">End Date:</label>
                         <input type="date" id="endDate" name="endDate" value="<%= endDate %>" />
-                        <input type="submit" value="Show Trend" />
-                    </form>
+                        <input class="btn btn-show-trend" type="submit" value="Show Trend" />
+                    </form> -->
+                    <div class="filter-section">
+                        <form class="filter-form" method="GET" action="/filter_stockchange">
+                            <label for="nfilter" class="form-label">Filter by Product:</label>
+                            <select id="nfilter" name="nfilter" class="form-select">
+                                <option value="">Select Product</option>
+                                <% if (uniqueProducts) { %>
+                                    <% uniqueProducts.forEach(function(product) { %>
+                                        <option value="<%= product.id %>" <%= nfilter === product.id.toString() ? 'selected' : '' %>><%= product.name %></option>
+                                    <% }); %>
+                                <% } %>
+                            </select>
+                            
+                            <label for="startDate" class="form-label">Start Date:</label>
+                            <input type="date" id="startDate" name="startDate" value="<%= startDate %>" class="form-control" />
+                            
+                            <label for="endDate" class="form-label">End Date:</label>
+                            <input type="date" id="endDate" name="endDate" value="<%= endDate %>" class="form-control" />
+                            
+                            <button type="submit" class="btn btn-filter">Show Trend</button>
+                        </form>
+                    </div>
                     
 
                     <table class="table table-hover scrolldown">
@@ -102,8 +221,8 @@
                         </thead>
                         <tbody>
                             <% if (locals.stockchange && locals.stockchange.length) { %>
-                                <% locals.stockchange.forEach(function(stockchanges) { %>
-                                    <tr style="font-weight:normal">
+                                <% locals.stockchange.reverse().forEach(function(stockchanges) { %> <!-- Reverse the array here -->
+                                    <tr style="font-weight:normal" data-product-id="<%= stockchanges.s_id %>">
                                         <td><%= formatDate(stockchanges.up_date) %></td>
                                         <td><%= stockchanges.s_name %></td>
                                         <td><%= stockchanges.s_id %></td>
@@ -113,6 +232,7 @@
                             <% } else { %>
                                 <tr><td colspan="4">No products found.</td></tr>
                             <% } %>
+                            
                         </tbody>
                     </table>
 
@@ -162,6 +282,19 @@
                             // Handle case where the chart should not be displayed
                             console.warn("Please select a Product ID to display the chart.");
                         }
+
+                        // Add click event listener to each table row
+                        const rows = document.querySelectorAll('table tbody tr');
+                        rows.forEach(row => {
+                            row.addEventListener('click', function() {
+                                const productId = this.getAttribute('data-product-id');
+                                // Update the product filter dropdown
+                                document.getElementById('nfilter').value = productId;
+
+                                // Submit the filter form to apply the filter
+                                document.getElementById('filterForm').submit();
+                            });
+                        });
                     </script>
 
                 </center>
@@ -169,7 +302,6 @@
         </main>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
-
 </body>
 </html>
 
