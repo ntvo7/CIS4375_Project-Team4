@@ -181,7 +181,6 @@
         <a class="active" href="/filter_stockchange"><i class="fas fa-history"></i> History</a>
         <a href="/logout"><i class="fas fa-sign-out-alt"></i> Log off</a>
     </div>
- 
 
     <div class="content">
         <main>
@@ -191,7 +190,6 @@
                         <div class="action-buttons">
                             <button class="btn btn-show-all" onclick="location.href='/filter_stockchange?nfilter=&startDate=&endDate='">Show All</button>
                         </div>
-         
          
                         <div class="filter-section">
                             <form class="filter-form" id="filterForm" method="GET" action="/filter_stockchange">
@@ -205,22 +203,15 @@
                                     <% } %>
                                 </select>
          
-         
                                 <label for="startDate" class="form-label">Start Date:</label>
                                 <input type="date" id="startDate" name="startDate" value="<%= startDate %>" class="form-control" />
          
-         
                                 <label for="endDate" class="form-label">End Date:</label>
                                 <input type="date" id="endDate" name="endDate" value="<%= endDate %>" class="form-control" />
-         
-         
-                                <button type="submit" class="btn btn-filter">Show Trend</button>
                             </form>
                         </div>
                     </div>
          
-                    
-
                     <table class="table table-hover scrolldown">
                         <thead>
                             <tr>
@@ -232,7 +223,7 @@
                         </thead>
                         <tbody>
                             <% if (locals.stockchange && locals.stockchange.length) { %>
-                                <% locals.stockchange.reverse().forEach(function(stockchanges) { %> <!-- Reverse the array here -->
+                                <% locals.stockchange.reverse().forEach(function(stockchanges) { %>
                                     <tr style="font-weight:normal" data-product-id="<%= stockchanges.s_id %>">
                                         <td><%= formatDate(stockchanges.up_date) %></td>
                                         <td><%= stockchanges.s_name %></td>
@@ -243,7 +234,6 @@
                             <% } else { %>
                                 <tr><td colspan="4">No products found.</td></tr>
                             <% } %>
-                            
                         </tbody>
                     </table>
 
@@ -293,19 +283,29 @@
                                 }
                             });
                         } else {
-                            // Handle case where the chart should not be displayed
                             console.warn("Please select a Product ID to display the chart.");
                         }
 
-                        // Add click event listener to each table row
+                        // Add event listeners to automatically submit the form when the dates change
+                        document.getElementById('startDate').addEventListener('input', function() {
+                            document.getElementById('filterForm').submit();
+                        });
+
+                        document.getElementById('endDate').addEventListener('input', function() {
+                            document.getElementById('filterForm').submit();
+                        });
+
+                        // Add event listener to submit the form automatically when the product is selected
+                        document.getElementById('nfilter').addEventListener('change', function() {
+                            document.getElementById('filterForm').submit();
+                        });
+
+                        // Add click event listener to each table row for product selection
                         const rows = document.querySelectorAll('table tbody tr');
                         rows.forEach(row => {
                             row.addEventListener('click', function() {
                                 const productId = this.getAttribute('data-product-id');
-                                // Update the product filter dropdown
                                 document.getElementById('nfilter').value = productId;
-
-                                // Submit the filter form to apply the filter
                                 document.getElementById('filterForm').submit();
                             });
                         });
@@ -322,14 +322,10 @@
 <% 
 function formatDate(dateString) {
     const date = new Date(dateString);
-    
-    // Normalize to UTC by setting the time to midnight
     date.setUTCHours(0, 0, 0, 0);
-    
-    const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const month = String(date.getUTCMonth() + 1).padStart(2, '0');
     const day = String(date.getUTCDate()).padStart(2, '0');
     const year = date.getUTCFullYear();
-    
     return `${month}/${day}/${year}`;
 }
 %>
