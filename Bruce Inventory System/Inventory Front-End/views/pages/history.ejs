@@ -187,8 +187,6 @@
         <main>
             <center>
                 <h2><%= locals.tagline %></h2>
-            </center>
-            <div>
                     <div class="container">
                         <div class="action-buttons">
                             <button class="btn btn-show-all" onclick="location.href='/filter_stockchange?nfilter=&startDate=&endDate='">Show All</button>
@@ -265,13 +263,16 @@
                         if (productId && stockChangeData.length > 0) {
                             const ctx = document.getElementById('stockChangeChart').getContext('2d');
 
+                            const reversedStockChangeLabels = stockChangeLabels.reverse();
+                            const reversedStockChangeData = stockChangeData.reverse();
+
                             const stockChangeChart = new Chart(ctx, {
                                 type: 'line',
                                 data: {
-                                    labels: stockChangeLabels,
+                                    labels: reversedStockChangeLabels, // Reversed labels
                                     datasets: [{
                                         label: 'Stock Changes for Product ID: ' + productId, // Show filtered product ID
-                                        data: stockChangeData,
+                                        data: reversedStockChangeData, // Reversed data
                                         borderColor: 'rgba(75, 192, 192, 1)',
                                         backgroundColor: 'rgba(75, 192, 192, 0.2)',
                                         borderWidth: 2,
